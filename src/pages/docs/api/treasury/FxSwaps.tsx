@@ -53,7 +53,7 @@ export default function FXSwaps() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="get-quote.bash"
-                            code={`curl https://api.pyrnado.com/v1/treasury/swaps/quote?from=USDC&to=EUR&amount=50000`}
+                            code={`curl https://api.zapzive.com/v1/treasury/swaps/quote?from=USDC&to=EUR&amount=50000`}
                         />
                     </div>
                 </div>
@@ -85,7 +85,7 @@ export default function FXSwaps() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="execute-swap.bash"
-                            code={`curl https://api.pyrnado.com/v1/treasury/swaps \\
+                            code={`curl https://api.zapzive.com/v1/treasury/swaps \\
   -d quote_id="quo_123456789"`}
                         />
                     </div>
@@ -129,3 +129,4 @@ function ResponseCode({ code, desc, color }: { code: string; desc: string; color
         </div>
     );
 }
+

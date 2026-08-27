@@ -32,7 +32,8 @@ async function main() {
             id: 'demo-user-id',
             email: 'demo@globalpay.com',
             name: 'Demo User',
-            password: 'password123',
+            // scrypt hash for the documented demo password: password123
+            password: 'scrypt:0eacad5ab829f243ebb6366562834592:5a613484d93727035d6c7e285d1af4ee56512867b571a721965cabe02904775304a7e571d4c7564bdaaa592eafa56156c6d4df0a842078d8ab473a5423ffeaae',
             companyId: demoCompanyId
         }
     });

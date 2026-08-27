@@ -95,10 +95,10 @@ router.post('/', async (req: AuthRequest, res: Response) => {
 });
 
 // GET /api/remittance/:id - Get remittance details
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', async (req: AuthRequest, res: Response) => {
     try {
         const remittance = await prisma.remittance.findUnique({
-            where: { id: req.params.id },
+            where: { id: req.params.id, companyId: req.companyId },
             include: { recipient: true }
         });
 
@@ -113,8 +113,10 @@ router.get('/:id', async (req: Request, res: Response) => {
 });
 
 // PUT /api/remittance/:id - Update remittance
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', async (req: AuthRequest, res: Response) => {
     try {
+        const existing = await prisma.remittance.findFirst({ where: { id: req.params.id, companyId: req.companyId } });
+        if (!existing) return res.status(404).json({ error: 'Remittance not found' });
         const remittance = await prisma.remittance.update({
             where: { id: req.params.id },
             data: req.body,
@@ -128,8 +130,10 @@ router.put('/:id', async (req: Request, res: Response) => {
 });
 
 // POST /api/remittance/:id/cancel - Cancel remittance
-router.post('/:id/cancel', async (req: Request, res: Response) => {
+router.post('/:id/cancel', async (req: AuthRequest, res: Response) => {
     try {
+        const existing = await prisma.remittance.findFirst({ where: { id: req.params.id, companyId: req.companyId } });
+        if (!existing) return res.status(404).json({ error: 'Remittance not found' });
         const remittance = await prisma.remittance.update({
             where: { id: req.params.id },
             data: { status: 'failed' },

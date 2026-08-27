@@ -2,10 +2,10 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 
 const stats = [
-  { value: 10000000000, prefix: "$", suffix: "", label: "Target Annual Volume", format: "currency" },
-  { value: 70000000, prefix: "$", suffix: "", label: "Projected Revenue", format: "currency" },
-  { value: 40, prefix: "", suffix: "+", label: "Countries Supported", format: "number" },
-  { value: 3, prefix: "<", suffix: "s", label: "Settlement Time", format: "number" },
+  { value: 2500000000, prefix: "$", suffix: "+", label: "Projected annual volume", format: "currency", context: "Modeled across payout, escrow, and treasury settlement flows." },
+  { value: 120000, prefix: "", suffix: "+", label: "Supported businesses and workers", format: "number", context: "Projected users across contractor, merchant, and payroll corridors." },
+  { value: 99.9, prefix: "", suffix: "%", label: "Availability target", format: "decimal", context: "Designed for critical payment operations and operational monitoring." },
+  { value: 40, prefix: "", suffix: "+", label: "Countries supported", format: "number", context: "Priority rollout across high-friction cash-out and bank payout markets." },
 ];
 
 function AnimatedCounter({
@@ -46,11 +46,12 @@ function AnimatedCounter({
 
   const formatValue = (num: number) => {
     if (format === "currency") {
-      if (num >= 1000000000) return (num / 1000000000).toFixed(0) + "B";
+      if (num >= 1000000000) return (num / 1000000000).toFixed(num >= 10000000000 ? 0 : 1) + "B";
       if (num >= 1000000) return Math.round(num / 1000000) + "M";
       if (num >= 1000) return Math.round(num / 1000) + "K";
     }
-    return Math.round(num).toString();
+    if (format === "decimal") return num.toFixed(1);
+    return Math.round(num).toLocaleString();
   };
 
   return (
@@ -65,14 +66,11 @@ export function StatsSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="py-32 lg:py-40 relative overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-accent/8 rounded-full blur-[150px]" />
-      </div>
-      <div className="absolute inset-0 bg-grid opacity-30" />
+    <section ref={ref} className="py-20 sm:py-32 lg:py-40 relative overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 bg-[#0A0A0A]" />
 
-      <div className="container mx-auto relative z-10 px-6 lg:px-8">
+      <div className="container mx-auto relative z-10 px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -80,7 +78,7 @@ export function StatsSection() {
           className="text-center mb-20"
         >
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6">
-            Built for <span className="text-emerald-400">scale</span>
+            Built for <span className="text-brand-400">scale</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Targeting the high-volume Kenya-Nigeria corridor first, then expanding across Africa, LATAM, and Asia.
@@ -105,6 +103,9 @@ export function StatsSection() {
               />
               <p className="text-muted-foreground text-base mt-4 font-semibold uppercase tracking-wider">
                 {stat.label}
+              </p>
+              <p className="text-zinc-500 text-sm mt-3 leading-relaxed max-w-xs mx-auto">
+                {stat.context}
               </p>
             </motion.div>
           ))}

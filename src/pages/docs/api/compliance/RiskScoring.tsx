@@ -53,7 +53,7 @@ export default function RiskScoring() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="get-risk.bash"
-                            code={`curl https://api.pyrnado.com/v1/compliance/risk/wkr_772`}
+                            code={`curl https://api.zapzive.com/v1/compliance/risk/wkr_772`}
                         />
                         <CodeWindow
                             title="Risk Object"
@@ -96,7 +96,7 @@ export default function RiskScoring() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="apply-override.bash"
-                            code={`curl https://api.pyrnado.com/v1/compliance/risk/overrides \\
+                            code={`curl https://api.zapzive.com/v1/compliance/risk/overrides \\
   -d worker_id="wkr_772" \\
   -d action="whitelist" \\
   -d note="Legacy partner approval"`}
@@ -140,3 +140,4 @@ function ResponseCode({ code, desc, color }: { code: string; desc: string; color
         </div>
     );
 }
+

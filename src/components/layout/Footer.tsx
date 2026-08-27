@@ -1,31 +1,33 @@
 import { Github, Twitter, Linkedin } from "lucide-react";
 import { Link } from "react-router-dom";
-import { PyrnadoLogo } from "@/components/ui/PyrnadoLogo";
+import { ZapziveLogo } from "@/components/ui/ZapziveLogo";
 
 const footerLinks = {
-  Products: [
-    { label: "Global Payroll", href: "/features#payroll" },
-    { label: "Smart Escrow", href: "/features#escrow" },
-    { label: "Remittances", href: "/features#remit" },
-    { label: "API", href: "/features#api" },
+  Product: [
+    { label: "Payroll", href: "/features#payroll" },
+    { label: "Escrow", href: "/features#escrow" },
+    { label: "Remittance", href: "/features#remit" },
+    { label: "Treasury", href: "/features#treasury" },
+    { label: "Developer API", href: "/docs" },
+  ],
+  Developers: [
+    { label: "Docs", href: "/docs" },
+    { label: "API Reference", href: "/docs/api-reference" },
+    { label: "Webhooks", href: "/docs/webhooks" },
+    { label: "Sandbox", href: "/docs/testing" },
+    { label: "Status", href: "#" },
   ],
   Company: [
     { label: "About", href: "/about" },
-    { label: "Careers", href: "/about" },
-    { label: "Press", href: "/contact" },
+    { label: "Security", href: "/features#security" },
+    { label: "Compliance", href: "/docs/compliance" },
     { label: "Contact", href: "/contact" },
   ],
-  Resources: [
-    { label: "Pricing", href: "/pricing" },
-    { label: "Use Cases", href: "/use-cases" },
-    { label: "Documentation", href: "#" },
-    { label: "API Reference", href: "#" },
-  ],
   Legal: [
-    { label: "Privacy", href: "#" },
     { label: "Terms", href: "#" },
-    { label: "Compliance", href: "#" },
-    { label: "Licenses", href: "#" },
+    { label: "Privacy", href: "#" },
+    { label: "Risk Disclosure", href: "#" },
+    { label: "Cookie Policy", href: "#" },
   ],
 };
 
@@ -43,13 +45,12 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-4 lg:col-span-1 mb-10 lg:mb-0">
             <Link to="/">
-              <PyrnadoLogo size="md" className="mb-6" />
+              <ZapziveLogo size="md" className="mb-6" />
             </Link>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              Pyrnado is the financial OS for boundary-less teams. Global payroll, smart escrow, and treasury management in one unified platform.
-              Stablecoin-powered infrastructure for Africa, LATAM, and Asia.
+            <p className="text-sm leading-relaxed text-zinc-500 font-medium">
+              Zapzive is borderless finance, built for teams. Global payroll, automated payments, and treasury management in one unified platform.
             </p>
-            <div className="flex gap-3">
+            <div className="flex gap-3 mt-6">
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
@@ -87,15 +88,11 @@ export function Footer() {
 
         {/* Bottom */}
         <div className="pt-10 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="border-t border-border mt-12 pt-8 text-center text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Pyrnado Network. All rights reserved.
+          <div className="text-sm text-zinc-600 font-medium">
+            © {new Date().getFullYear()} Zapzive Network. All rights reserved.
           </div>
           <div className="flex items-center gap-6">
-            <span className="text-muted-foreground text-sm flex items-center gap-2.5 font-medium">
-              <span className="w-2.5 h-2.5 rounded-full bg-accent animate-pulse" />
-              All systems operational
-            </span>
-            <span className="text-muted-foreground text-sm">
+            <span className="text-zinc-600 text-xs font-semibold uppercase tracking-widest">
               Built on Polygon & Base
             </span>
           </div>
@@ -104,3 +101,4 @@ export function Footer() {
     </footer>
   );
 }
+

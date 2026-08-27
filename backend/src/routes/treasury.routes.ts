@@ -29,11 +29,12 @@ router.get('/portfolio', async (req: AuthRequest, res: Response) => {
         });
         const totalValue = assets.reduce((sum, asset) => sum + asset.usdValue, 0);
 
-        // Mock historical data for chart
-        const history = Array.from({ length: 30 }, (_, i) => ({
-            date: new Date(Date.now() - (29 - i) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-            value: totalValue * (0.95 + Math.random() * 0.1)
-        }));
+        // No historical valuation model exists yet; return the persisted current
+        // valuation instead of fabricating a price history.
+        const history = totalValue > 0 ? [{
+            date: new Date().toISOString().split('T')[0],
+            value: totalValue
+        }] : [];
 
         res.json({
             totalValue,
@@ -49,6 +50,13 @@ router.get('/portfolio', async (req: AuthRequest, res: Response) => {
 router.post('/swap', async (req: AuthRequest, res: Response) => {
     try {
         const { fromAsset, toAsset, fromAmount, toAmount, rate, fee } = req.body;
+        if (!fromAsset || !toAsset || fromAsset === toAsset || !Number.isFinite(Number(fromAmount)) || Number(fromAmount) <= 0 || !Number.isFinite(Number(toAmount)) || Number(toAmount) <= 0) {
+            return res.status(400).json({ error: 'Valid, distinct assets and positive amounts are required' });
+        }
+        const source = await prisma.asset.findFirst({ where: { companyId: req.companyId, symbol: fromAsset } });
+        const destination = await prisma.asset.findFirst({ where: { companyId: req.companyId, symbol: toAsset } });
+        if (!source || !destination) return res.status(400).json({ error: 'One or more assets are not available in this treasury' });
+        if (source.balance < Number(fromAmount)) return res.status(400).json({ error: 'Insufficient asset balance' });
 
         const swap = await prisma.swap.create({
             data: {
@@ -126,6 +134,9 @@ router.post('/swap', async (req: AuthRequest, res: Response) => {
 router.post('/deposit', async (req: AuthRequest, res: Response) => {
     try {
         const { asset, amount } = req.body;
+        if (!asset || !Number.isFinite(Number(amount)) || Number(amount) <= 0) return res.status(400).json({ error: 'A valid asset and positive amount are required' });
+        const existingAsset = await prisma.asset.findFirst({ where: { companyId: req.companyId, symbol: asset } });
+        if (!existingAsset) return res.status(400).json({ error: 'Asset is not available in this treasury' });
 
         // Update asset balance
         await prisma.asset.update({
@@ -166,6 +177,10 @@ router.post('/deposit', async (req: AuthRequest, res: Response) => {
 router.post('/withdraw', async (req: AuthRequest, res: Response) => {
     try {
         const { asset, amount, address } = req.body;
+        if (!asset || !address || !Number.isFinite(Number(amount)) || Number(amount) <= 0) return res.status(400).json({ error: 'Asset, destination address, and positive amount are required' });
+        const existingAsset = await prisma.asset.findFirst({ where: { companyId: req.companyId, symbol: asset } });
+        if (!existingAsset) return res.status(400).json({ error: 'Asset is not available in this treasury' });
+        if (existingAsset.balance < Number(amount)) return res.status(400).json({ error: 'Insufficient asset balance' });
 
         // Update asset balance
         await prisma.asset.update({

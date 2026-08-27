@@ -16,12 +16,12 @@ export default function EscrowConcept() {
                 <div className="space-y-6">
                     <h2 className="text-2xl font-bold text-white">How it works</h2>
                     <p className="text-zinc-400 leading-relaxed">
-                        Escrow contracts on Pyrnado act as logical vaults. You define participants (Client, Contractor),
+                        Escrow contracts on zapzive act as logical vaults. You define participants (Client, Contractor),
                         a total budget, and milestones.
                     </p>
                     <ul className="space-y-4">
                         <StepItem icon={<Lock className="w-4 h-4" />} text="Client initiates and funds the contract." />
-                        <StepItem icon={<Shield className="w-4 h-4" />} text="Funds are locked in a neutral Pyrnado vault." />
+                        <StepItem icon={<Shield className="w-4 h-4" />} text="Funds are locked in a neutral zapzive vault." />
                         <StepItem icon={<Unlock className="w-4 h-4" />} text="Contractor submits work; Client releases specific milestones." />
                     </ul>
                 </div>
@@ -32,7 +32,7 @@ export default function EscrowConcept() {
                     </div>
                     <p className="text-sm text-zinc-500 leading-relaxed">
                         If an agreement fails, either party can raise a Dispute. Our automated arbitration system
-                        freezes funds and triggers a manual review by Pyrnado compliance officers.
+                        freezes funds and triggers a manual review by zapzive compliance officers.
                     </p>
                     <Badge className="bg-red-500/10 text-red-400 border-red-500/20">Admin Review Guaranteed</Badge>
                 </div>
@@ -51,3 +51,4 @@ function StepItem({ icon, text }: { icon: React.ReactNode; text: string }) {
         </li>
     );
 }
+

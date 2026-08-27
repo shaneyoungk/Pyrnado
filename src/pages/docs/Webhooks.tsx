@@ -9,7 +9,7 @@ export default function Webhooks() {
             <section className="space-y-6">
                 <h1 className="text-5xl font-bold text-white tracking-tight">Webhooks</h1>
                 <p className="text-xl text-zinc-400 leading-relaxed max-w-3xl">
-                    Pyrnado uses webhooks to notify your application when an event happens
+                    zapzive uses webhooks to notify your application when an event happens
                     in your account. Webhooks are essential for asynchronous updates like
                     payment clearing and KYC verification.
                 </p>
@@ -17,7 +17,7 @@ export default function Webhooks() {
 
             <DocCallout type="info" title="Push vs Poll">
                 Webhooks allow you to avoid frequent API polling. Instead of asking "is this paid?",
-                Pyrnado will proactively "push" the data to your server the moment it happens.
+                zapzive will proactively "push" the data to your server the moment it happens.
             </DocCallout>
 
             {/* Architecture Section */}
@@ -26,8 +26,8 @@ export default function Webhooks() {
                     <ShieldCheck className="w-6 h-6 text-emerald-400" /> Signature Verification
                 </h2>
                 <p className="text-zinc-400 leading-relaxed">
-                    To ensure a request actually came from Pyrnado, you must verify the
-                    <code className="text-emerald-400 mx-1">Pyrnado-Signature</code> header.
+                    To ensure a request actually came from zapzive, you must verify the
+                    <code className="text-emerald-400 mx-1">zapzive-Signature</code> header.
                     This header contains an HMAC hex digest generated using your Webhook Secret.
                 </p>
 
@@ -35,12 +35,12 @@ export default function Webhooks() {
                     <CodeWindow
                         language="typescript"
                         title="Node.js (Express)"
-                        code={`const secret = process.env.WEBHOOK_SECRET;\n\napp.post('/webhooks', (req, res) => {\n  const sig = req.headers['pyrnado-signature'];\n  const event = client.webhooks.constructEvent(req.body, sig, secret);\n\n  if (event.type === 'payout.paid') {\n    // Handle success\n  }\n\n  res.json({received: true});\n});`}
+                        code={`const secret = process.env.WEBHOOK_SECRET;\n\napp.post('/webhooks', (req, res) => {\n  const sig = req.headers['zapzive-signature'];\n  const event = client.webhooks.constructEvent(req.body, sig, secret);\n\n  if (event.type === 'payout.paid') {\n    // Handle success\n  }\n\n  res.json({received: true});\n});`}
                     />
                     <CodeWindow
                         language="python"
                         title="Python (Flask)"
-                        code={`@app.route('/webhooks', methods=['POST'])\ndef webhook():\n    sig = request.headers.get('Pyrnado-Signature')\n    try:\n        event = pyrnado.Webhook.construct_event(\n            request.data, sig, secret\n        )\n    except Exception as e:\n        return "Invalid signature", 400\n\n    return "OK"`}
+                        code={`@app.route('/webhooks', methods=['POST'])\ndef webhook():\n    sig = request.headers.get('zapzive-Signature')\n    try:\n        event = zapzive.Webhook.construct_event(\n            request.data, sig, secret\n        )\n    except Exception as e:\n        return "Invalid signature", 400\n\n    return "OK"`}
                     />
                 </div>
             </section>
@@ -104,3 +104,4 @@ function EventCard({ type, desc }: { type: string; desc: string }) {
         </div>
     );
 }
+

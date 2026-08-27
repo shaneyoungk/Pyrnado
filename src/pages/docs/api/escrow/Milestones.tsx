@@ -53,7 +53,7 @@ export default function MilestoneLogic() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="add-milestone.bash"
-                            code={`curl https://api.pyrnado.com/v1/escrow/contracts/esc_123/milestones \\
+                            code={`curl https://api.zapzive.com/v1/escrow/contracts/esc_123/milestones \\
   -d title="Frontend V2 completion" \\
   -d amount=400000 \\
   -d validator_id="vld_992"`}
@@ -87,7 +87,7 @@ export default function MilestoneLogic() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="approve-milestone.bash"
-                            code={`curl https://api.pyrnado.com/v1/escrow/milestones/ms_771/approve \\
+                            code={`curl https://api.zapzive.com/v1/escrow/milestones/ms_771/approve \\
   -d signature="0x9a2b..."`}
                         />
                     </div>
@@ -124,3 +124,4 @@ function ResponseCode({ code, desc, color }: { code: string; desc: string; color
         </div>
     );
 }
+

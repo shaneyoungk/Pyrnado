@@ -335,8 +335,10 @@ router.get('/contracts/:id', async (req: Request, res: Response) => {
 });
 
 // PUT /api/escrow/contracts/:id - Update contract
-router.put('/contracts/:id', async (req: Request, res: Response) => {
+router.put('/contracts/:id', async (req: AuthRequest, res: Response) => {
     try {
+        const existing = await prisma.contract.findFirst({ where: { id: req.params.id, companyId: req.companyId } });
+        if (!existing) return res.status(404).json({ error: 'Contract not found' });
         const contract = await prisma.contract.update({
             where: { id: req.params.id },
             data: req.body,
@@ -352,9 +354,11 @@ router.put('/contracts/:id', async (req: Request, res: Response) => {
 });
 
 // POST /api/escrow/contracts/:id/milestones - Add milestone
-router.post('/contracts/:id/milestones', async (req: Request, res: Response) => {
+router.post('/contracts/:id/milestones', async (req: AuthRequest, res: Response) => {
     try {
         const { title, description, amount, dueDate } = req.body;
+        const contract = await prisma.contract.findFirst({ where: { id: req.params.id, companyId: req.companyId } });
+        if (!contract) return res.status(404).json({ error: 'Contract not found' });
 
         const milestone = await prisma.milestone.create({
             data: {
@@ -374,8 +378,12 @@ router.post('/contracts/:id/milestones', async (req: Request, res: Response) => 
 });
 
 // PUT /api/escrow/contracts/:contractId/milestones/:milestoneId - Update milestone
-router.put('/contracts/:contractId/milestones/:milestoneId', async (req: Request, res: Response) => {
+router.put('/contracts/:contractId/milestones/:milestoneId', async (req: AuthRequest, res: Response) => {
     try {
+        const contract = await prisma.contract.findFirst({ where: { id: req.params.contractId, companyId: req.companyId } });
+        if (!contract) return res.status(404).json({ error: 'Contract not found' });
+        const existingMilestone = await prisma.milestone.findFirst({ where: { id: req.params.milestoneId, contractId: contract.id } });
+        if (!existingMilestone) return res.status(404).json({ error: 'Milestone not found' });
         const milestone = await prisma.milestone.update({
             where: { id: req.params.milestoneId },
             data: req.body
@@ -435,9 +443,11 @@ router.post('/contracts/:contractId/release', async (req: AuthRequest, res: Resp
 });
 
 // POST /api/escrow/contracts/:id/dispute - Raise dispute
-router.post('/contracts/:id/dispute', async (req: Request, res: Response) => {
+router.post('/contracts/:id/dispute', async (req: AuthRequest, res: Response) => {
     try {
         const { reason } = req.body;
+        const existing = await prisma.contract.findFirst({ where: { id: req.params.id, companyId: req.companyId } });
+        if (!existing) return res.status(404).json({ error: 'Contract not found' });
 
         const contract = await prisma.contract.update({
             where: { id: req.params.id },

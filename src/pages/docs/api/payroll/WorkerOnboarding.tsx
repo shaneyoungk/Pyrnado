@@ -53,7 +53,7 @@ export default function WorkerOnboarding() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="onboard-worker.bash"
-                            code={`curl https://api.pyrnado.com/v1/payroll/workers \\
+                            code={`curl https://api.zapzive.com/v1/payroll/workers \\
   -d name="Alice Smith" \\
   -d email="alice@example.com" \\
   -d country="GB" \\
@@ -89,7 +89,7 @@ export default function WorkerOnboarding() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="get-worker.bash"
-                            code={`curl https://api.pyrnado.com/v1/payroll/workers/wkr_881`}
+                            code={`curl https://api.zapzive.com/v1/payroll/workers/wkr_881`}
                         />
                     </div>
                 </div>
@@ -135,3 +135,4 @@ function ResponseCode({ code, desc, color }: { code: string; desc: string; color
         </div>
     );
 }
+

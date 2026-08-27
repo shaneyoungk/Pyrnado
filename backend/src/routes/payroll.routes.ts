@@ -71,10 +71,10 @@ router.post('/batches', async (req: AuthRequest, res: Response) => {
 });
 
 // GET /api/payroll/batches/:id - Get batch details
-router.get('/batches/:id', async (req: Request, res: Response) => {
+router.get('/batches/:id', async (req: AuthRequest, res: Response) => {
     try {
-        const batch = await prisma.payrollBatch.findUnique({
-            where: { id: req.params.id },
+        const batch = await prisma.payrollBatch.findFirst({
+            where: { id: req.params.id, companyId: req.companyId },
             include: {
                 payments: {
                     include: { worker: true }
@@ -93,8 +93,10 @@ router.get('/batches/:id', async (req: Request, res: Response) => {
 });
 
 // PUT /api/payroll/batches/:id - Update batch
-router.put('/batches/:id', async (req: Request, res: Response) => {
+router.put('/batches/:id', async (req: AuthRequest, res: Response) => {
     try {
+        const existing = await prisma.payrollBatch.findFirst({ where: { id: req.params.id, companyId: req.companyId } });
+        if (!existing) return res.status(404).json({ error: 'Batch not found' });
         const batch = await prisma.payrollBatch.update({
             where: { id: req.params.id },
             data: req.body,
@@ -112,8 +114,10 @@ router.put('/batches/:id', async (req: Request, res: Response) => {
 });
 
 // POST /api/payroll/batches/:id/approve - Approve batch
-router.post('/batches/:id/approve', async (req: Request, res: Response) => {
+router.post('/batches/:id/approve', async (req: AuthRequest, res: Response) => {
     try {
+        const existing = await prisma.payrollBatch.findFirst({ where: { id: req.params.id, companyId: req.companyId } });
+        if (!existing) return res.status(404).json({ error: 'Batch not found' });
         const batch = await prisma.payrollBatch.update({
             where: { id: req.params.id },
             data: { status: 'approved' }
@@ -126,8 +130,10 @@ router.post('/batches/:id/approve', async (req: Request, res: Response) => {
 });
 
 // POST /api/payroll/batches/:id/execute - Execute batch
-router.post('/batches/:id/execute', async (req: Request, res: Response) => {
+router.post('/batches/:id/execute', async (req: AuthRequest, res: Response) => {
     try {
+        const existing = await prisma.payrollBatch.findFirst({ where: { id: req.params.id, companyId: req.companyId } });
+        if (!existing) return res.status(404).json({ error: 'Batch not found' });
         const batch = await prisma.payrollBatch.update({
             where: { id: req.params.id },
             data: {
@@ -234,8 +240,10 @@ router.post('/workers', async (req: AuthRequest, res: Response) => {
 });
 
 // PUT /api/payroll/workers/:id - Update worker
-router.put('/workers/:id', async (req: Request, res: Response) => {
+router.put('/workers/:id', async (req: AuthRequest, res: Response) => {
     try {
+        const existing = await prisma.worker.findFirst({ where: { id: req.params.id, companyId: req.companyId } });
+        if (!existing) return res.status(404).json({ error: 'Worker not found' });
         const worker = await prisma.worker.update({
             where: { id: req.params.id },
             data: req.body
@@ -248,8 +256,10 @@ router.put('/workers/:id', async (req: Request, res: Response) => {
 });
 
 // DELETE /api/payroll/workers/:id - Remove worker
-router.delete('/workers/:id', async (req: Request, res: Response) => {
+router.delete('/workers/:id', async (req: AuthRequest, res: Response) => {
     try {
+        const existing = await prisma.worker.findFirst({ where: { id: req.params.id, companyId: req.companyId } });
+        if (!existing) return res.status(404).json({ error: 'Worker not found' });
         await prisma.worker.delete({
             where: { id: req.params.id }
         });

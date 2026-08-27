@@ -37,8 +37,8 @@
 
   .dark {
     /* Calm Financial Interface - Dark Mode */
-    --background: 0 0% 6%;
-    /* #0F0F0F - True black background */
+    --background: 240 10% 3.9%;
+    /* zinc-950 equivalent for softer dark mode */
     --foreground: 0 0% 95%;
     /* #F2F2F2 - High contrast text */
 
@@ -74,7 +74,7 @@
     --ring: 186 20% 35%;
     /* Very subtle focus ring */
 
-    --sidebar-background: 0 0% 6%;
+    --sidebar-background: 240 10% 3.9%;
     --sidebar-foreground: 0 0% 95%;
     --sidebar-primary: 186 30% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
@@ -96,11 +96,25 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground antialiased selection:bg-brand-500/30;
     font-family: 'Space Grotesk', sans-serif;
     font-size: 13px;
     line-height: 1.5;
     letter-spacing: -0.01em;
+    background-attachment: fixed;
+    background-image:
+      radial-gradient(at 0% 0%, hsla(140, 84%, 12%, 0.15) 0, transparent 50%),
+      radial-gradient(at 50% 0%, hsla(140, 84%, 8%, 0.1) 0, transparent 50%);
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.015;
+    pointer-events: none;
   }
 
   h1,

@@ -74,7 +74,7 @@ export default function PayrollAPI() {
                         <CodeWindow
                             language="bash"
                             title="cURL"
-                            code={`curl https://api.pyrnado.com/v1/payroll/workers \\
+                            code={`curl https://api.zapzive.com/v1/payroll/workers \\
   -u sk_test_...: \\
   -d full_name="John Doe" \\
   -d email="john@example.com"`}
@@ -130,13 +130,13 @@ export default function PayrollAPI() {
 
             <DocCallout type="mistake" title="Bank Details Security">
                 Never collect bank details directly on your frontend. Use our
-                <a href="/docs/libraries/react" className="text-emerald-400"> Secure Fields</a> to remain
+                <a href="/docs/sdks/react" className="text-emerald-400"> Secure Fields</a> to remain
                 PCI-compliant and reduce your security liability.
             </DocCallout>
 
             {/* Features Highlight */}
             <section className="bg-white/[0.02] border border-white/5 rounded-3xl p-10">
-                <h2 className="text-2xl font-bold text-white mb-10">Why use Pyrnado Payroll?</h2>
+                <h2 className="text-2xl font-bold text-white mb-10">Why use zapzive Payroll?</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                     <FeatureItem icon={<Building2 className="w-5 h-5 text-blue-400" />} title="Global Tax" desc="Automated withholding for 50+ jurisdictions." />
                     <FeatureItem icon={<CreditCard className="w-5 h-5 text-emerald-400" />} title="Direct Deposit" desc="Instant transfers to bank accounts." />
@@ -184,3 +184,4 @@ function FeatureItem({ icon, title, desc }: { icon: any; title: string; desc: st
         </div>
     );
 }
+

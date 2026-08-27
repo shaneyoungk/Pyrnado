@@ -17,18 +17,20 @@ interface LiquidityPool {
     status: "healthy" | "low";
 }
 
-const mockChains: ChainStatus[] = [
+const mockChains: ChainStatus[] = [];
+/*
     { name: "Ethereum", status: "healthy", gasPrice: 45, latency: 12 },
     { name: "Polygon", status: "healthy", gasPrice: 120, latency: 2 },
     { name: "Arbitrum", status: "degraded", gasPrice: 0.5, latency: 1 },
     { name: "Optimism", status: "healthy", gasPrice: 0.8, latency: 1 },
-];
+]; */
 
-const mockPools: LiquidityPool[] = [
+const mockPools: LiquidityPool[] = [];
+/*
     { name: "USDC/USDT", tvl: 2400000, status: "healthy" },
     { name: "ETH/USDC", tvl: 1200000, status: "healthy" },
     { name: "MATIC/USDC", tvl: 450000, status: "low" },
-];
+]; */
 
 export default function NetworkHealthIndicator() {
     const [isOpen, setIsOpen] = useState(false);

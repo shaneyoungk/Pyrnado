@@ -43,7 +43,7 @@ export default function AnalyticsAPI() {
                         <CodeWindow
                             language="bash"
                             title="cURL"
-                            code={`curl https://api.pyrnado.com/v1/analytics/metrics?period=30d`}
+                            code={`curl https://api.zapzive.com/v1/analytics/metrics?period=30d`}
                         />
                         <CodeWindow
                             language="json"
@@ -97,3 +97,4 @@ function AnalyticsCard({ icon, title, desc }: { icon: any, title: string, desc: 
         </div>
     );
 }
+

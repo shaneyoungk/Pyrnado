@@ -1,8 +1,32 @@
 import { Router, Request, Response } from 'express';
 import prisma from '../lib/prisma';
 import crypto from 'crypto';
+import jwt from 'jsonwebtoken';
+import { promisify } from 'util';
+import { authMiddleware, AuthRequest } from '../middleware/auth.middleware';
 
 const router = Router();
+const scryptAsync = promisify(crypto.scrypt);
+
+async function hashPassword(password: string): Promise<string> {
+    const salt = crypto.randomBytes(16).toString('hex');
+    const derivedKey = await scryptAsync(password, salt, 64) as Buffer;
+    return `scrypt:${salt}:${derivedKey.toString('hex')}`;
+}
+
+async function verifyPassword(password: string, stored: string): Promise<boolean> {
+    if (!stored.startsWith('scrypt:')) return stored === password;
+    const [, salt, key] = stored.split(':');
+    const derivedKey = await scryptAsync(password, salt, 64) as Buffer;
+    const expected = Buffer.from(key, 'hex');
+    return expected.length === derivedKey.length && crypto.timingSafeEqual(expected, derivedKey);
+}
+
+function issueToken(userId: string): string {
+    const secret = process.env.JWT_SECRET;
+    if (!secret || secret.length < 32) throw new Error('JWT_SECRET must be at least 32 characters');
+    return jwt.sign({}, secret, { subject: userId, expiresIn: '8h' });
+}
 
 // POST /api/auth/signup - Create new user account
 router.post('/signup', async (req: Request, res: Response) => {
@@ -15,6 +39,14 @@ router.post('/signup', async (req: Request, res: Response) => {
                 error: 'Missing required fields',
                 details: 'Please provide all required information'
             });
+        }
+
+        if (typeof password !== 'string' || password.length < 8) {
+            return res.status(400).json({ error: 'Password must be at least 8 characters' });
+        }
+
+        if (typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            return res.status(400).json({ error: 'Please provide a valid email address' });
         }
 
         // Check if user already exists
@@ -46,7 +78,7 @@ router.post('/signup', async (req: Request, res: Response) => {
             data: {
                 email: email.toLowerCase(),
                 name: name.trim(),
-                password: password, // In production, hash this!
+                password: await hashPassword(password),
                 companyId: company.id
             }
         });
@@ -79,6 +111,14 @@ router.post('/signup', async (req: Request, res: Response) => {
             ]
         });
 
+        await prisma.asset.createMany({
+            data: [
+                { companyId: company.id, symbol: 'USDC', name: 'USD Coin', balance: 0, usdValue: 0, change24h: 0, chain: 'Ethereum', color: '#2775CA', icon: 'usdc' },
+                { companyId: company.id, symbol: 'ETH', name: 'Ethereum', balance: 0, usdValue: 0, change24h: 0, chain: 'Ethereum', color: '#627EEA', icon: 'ethereum' },
+                { companyId: company.id, symbol: 'USDT', name: 'Tether', balance: 0, usdValue: 0, change24h: 0, chain: 'Ethereum', color: '#26A17B', icon: 'tether' }
+            ]
+        });
+
         // Add some initial transactions (note: Transaction model currently doesn't have companyId, I should add it or relate it)
         // For now, I'll just create them. In a real app, transactions would be scoped.
 
@@ -99,7 +139,7 @@ router.post('/signup', async (req: Request, res: Response) => {
                 country: company.country,
                 isTestMode: company.isTestMode
             },
-            token: user.id // Use user ID as token for this implementation
+            token: issueToken(user.id)
         });
     } catch (error) {
         console.error('Signup error:', error);
@@ -125,7 +165,7 @@ router.post('/login', async (req: Request, res: Response) => {
             include: { company: true }
         });
 
-        if (!user || user.password !== password) {
+        if (!user || !(await verifyPassword(password, user.password))) {
             return res.status(401).json({
                 error: 'Invalid credentials',
                 details: 'Incorrect email or password'
@@ -135,7 +175,10 @@ router.post('/login', async (req: Request, res: Response) => {
         // Update last login
         await prisma.user.update({
             where: { id: user.id },
-            data: { lastLogin: new Date() }
+            data: {
+                lastLogin: new Date(),
+                ...(user.password.startsWith('scrypt:') ? {} : { password: await hashPassword(password) })
+            }
         });
 
         console.log(`✅ User logged in: ${email}`);
@@ -150,7 +193,7 @@ router.post('/login', async (req: Request, res: Response) => {
                 companyId: user.companyId
             },
             company: user.company,
-            token: user.id // Use user ID as token
+            token: issueToken(user.id)
         });
     } catch (error) {
         res.status(500).json({ error: 'Login failed' });
@@ -175,12 +218,12 @@ router.post('/verify-email', async (req: Request, res: Response) => {
 });
 
 // POST /api/auth/complete-onboarding - Complete company setup
-router.post('/complete-onboarding', async (req: Request, res: Response) => {
+router.post('/complete-onboarding', authMiddleware as any, async (req: AuthRequest, res: Response) => {
     try {
-        const { companyId, phone, address, businessType, monthlyVolume } = req.body;
+        const { phone, address } = req.body;
 
         const company = await prisma.company.update({
-            where: { id: companyId },
+            where: { id: req.companyId },
             data: {
                 phone,
                 address

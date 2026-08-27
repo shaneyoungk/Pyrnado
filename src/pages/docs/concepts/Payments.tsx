@@ -7,7 +7,7 @@ export default function PaymentsConcept() {
             <section className="space-y-6">
                 <h1 className="text-4xl font-bold text-white tracking-tight">Understanding Payments</h1>
                 <p className="text-xl text-zinc-400 leading-relaxed max-w-3xl">
-                    Pyrnado breaks down international boundaries by transforming a complex sequence of local clearing events
+                    zapzive breaks down international boundaries by transforming a complex sequence of local clearing events
                     into a simple, unified API request.
                 </p>
             </section>
@@ -28,7 +28,7 @@ export default function PaymentsConcept() {
                         <LifecycleStep
                             title="Liquidity Provisioning"
                             status="Exchanging"
-                            desc="Pyrnado sources liquidity for the destination currency. We use a hybrid of local fiat reserves and on-chain liquidity."
+                            desc="zapzive sources liquidity for the destination currency. We use a hybrid of local fiat reserves and on-chain liquidity."
                         />
                         <LifecycleStep
                             title="Local Settlement"
@@ -78,3 +78,4 @@ function LifecycleStep({ title, status, desc }: { title: string; status: string;
         </div>
     );
 }
+

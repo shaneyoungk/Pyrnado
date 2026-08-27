@@ -52,7 +52,7 @@ export default function GasManagement() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="get-gas.bash"
-                            code={`curl https://api.pyrnado.com/v1/treasury/gas/reserves \\
+                            code={`curl https://api.zapzive.com/v1/treasury/gas/reserves \\
   -u sk_test_...:`}
                         />
                     </div>
@@ -85,7 +85,7 @@ export default function GasManagement() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="update-strategy.bash"
-                            code={`curl -X PATCH https://api.pyrnado.com/v1/treasury/gas/strategy \\
+                            code={`curl -X PATCH https://api.zapzive.com/v1/treasury/gas/strategy \\
   -d auto_refill=true \\
   -d min_reserve=0.5 \\
   -d max_gwei=150`}
@@ -129,3 +129,4 @@ function ResponseCode({ code, desc, color }: { code: string; desc: string; color
         </div>
     );
 }
+

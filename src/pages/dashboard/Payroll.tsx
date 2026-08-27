@@ -49,9 +49,10 @@ interface PayrollBatch {
     status: "draft" | "pending" | "approved" | "processing" | "completed";
     createdDate: string;
     scheduledDate?: string;
+    completedDate?: string;
 }
 
-import { useWorkers, usePayrollBatches } from "@/hooks/use-payroll";
+import { useWorkers, usePayrollBatches, useExecuteBatch } from "@/hooks/use-payroll";
 import { AddWorkerModal } from "@/components/dashboard/modals/AddWorkerModal";
 import { ImportCSVModal } from "@/components/dashboard/modals/ImportCSVModal";
 import { NewBatchWizard } from "@/components/dashboard/modals/NewBatchWizard";
@@ -73,6 +74,7 @@ export default function Payroll() {
     // Fetch real data
     const { data: workersData, isLoading: workersLoading } = useWorkers({ search: searchQuery });
     const { data: batchesData, isLoading: batchesLoading } = usePayrollBatches();
+    const executeBatch = useExecuteBatch();
 
     const workers = workersData || [];
     const batches = batchesData || [];
@@ -343,7 +345,7 @@ export default function Payroll() {
 
                                             {batch.status === "approved" && (
                                                 <div className="mt-4 pt-4 border-t border-border">
-                                                    <Button className="h-8 px-4 rounded-lg text-xs w-full shadow-sm">
+                                                    <Button onClick={(event) => { event.stopPropagation(); executeBatch.mutate(batch.id); }} disabled={executeBatch.isPending} className="h-8 px-4 rounded-lg text-xs w-full shadow-sm">
                                                         <Play className="w-3.5 h-3.5 mr-1.5" />
                                                         Execute Payroll
                                                     </Button>
@@ -360,9 +362,33 @@ export default function Payroll() {
 
             {/* History Tab */}
             {activeTab === "history" && (
-                <div className="premium-card p-6 text-center">
-                    <Clock className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
-                    <p className="text-muted-foreground">Payroll history coming soon</p>
+                <div className="premium-card overflow-hidden">
+                    <div className="card-header">
+                        <h3 className="font-semibold text-foreground text-[15px]">Payroll History</h3>
+                    </div>
+                    {batches.filter((batch: PayrollBatch) => batch.status === 'completed').length === 0 ? (
+                        <div className="p-10 text-center">
+                            <Clock className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
+                            <p className="text-muted-foreground">Completed payroll batches will appear here.</p>
+                        </div>
+                    ) : (
+                        <div className="divide-y divide-border">
+                            {batches.filter((batch: PayrollBatch) => batch.status === 'completed').map((batch: PayrollBatch) => (
+                                <button key={batch.id} onClick={() => navigate(`/dashboard/payroll/batches/${batch.id}`)} className="w-full p-5 text-left hover:bg-muted/50 transition-colors">
+                                    <div className="flex items-center justify-between gap-4">
+                                        <div>
+                                            <p className="font-semibold text-foreground text-sm">{batch.name}</p>
+                                            <p className="text-xs text-muted-foreground">Completed {batch.completedDate || batch.createdDate}</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="font-semibold text-foreground tabular-nums">${(batch.totalAmount || 0).toLocaleString()}</p>
+                                            <p className="text-xs text-muted-foreground">{batch.workerCount} workers</p>
+                                        </div>
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </div>
             )}
 

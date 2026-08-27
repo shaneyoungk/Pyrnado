@@ -28,7 +28,7 @@ import CommandPalette from "@/components/layout/CommandPalette";
 import NotificationsCenter from "@/components/layout/NotificationsCenter";
 import NetworkHealthIndicator from "@/components/layout/NetworkHealthIndicator";
 import { ModeToggle } from "@/components/ui/mode-toggle";
-import { PyrnadoLogo } from "@/components/ui/PyrnadoLogo";
+import { ZapziveLogo } from "@/components/ui/ZapziveLogo";
 import { Button } from "@/components/ui/button";
 import {
     Tooltip,
@@ -143,9 +143,9 @@ export default function DashboardLayout() {
                             isCollapsed ? "justify-center px-0" : "px-6 justify-between"
                         )}>
                             {isCollapsed ? (
-                                <PyrnadoLogo size="sm" className="[&_span]:hidden mr-0" />
+                                <ZapziveLogo size="sm" className="[&_span]:hidden mr-0" />
                             ) : (
-                                <PyrnadoLogo size="sm" />
+                                <ZapziveLogo size="sm" />
                             )}
                         </div>
 
@@ -304,7 +304,7 @@ export default function DashboardLayout() {
                                 <button onClick={() => setIsMobileMenuOpen(true)} className="text-muted-foreground hover:text-foreground transition-colors">
                                     <Menu className="w-5 h-5" />
                                 </button>
-                                <PyrnadoLogo size="sm" />
+                                <ZapziveLogo size="sm" />
                             </div>
 
                             {/* Header Title */}
@@ -402,7 +402,7 @@ export default function DashboardLayout() {
                                 className="fixed inset-y-0 left-0 w-72 bg-background border-r border-border z-[70] lg:hidden flex flex-col shadow-2xl"
                             >
                                 <div className="p-6 flex justify-between items-center border-b border-border">
-                                    <PyrnadoLogo size="sm" />
+                                    <ZapziveLogo size="sm" />
                                     <button onClick={() => setIsMobileMenuOpen(false)}>
                                         <X className="w-5 h-5 text-muted-foreground" />
                                     </button>
@@ -457,3 +457,4 @@ export default function DashboardLayout() {
         </PageHeaderProvider>
     );
 }
+

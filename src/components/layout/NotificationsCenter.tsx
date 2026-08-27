@@ -16,7 +16,8 @@ interface Notification {
     actionHref?: string;
 }
 
-const mockNotifications: Notification[] = [
+const mockNotifications: Notification[] = [];
+/*
     {
         id: "1",
         type: "success",
@@ -51,7 +52,7 @@ const mockNotifications: Notification[] = [
         timestamp: "5h ago",
         read: true,
     },
-];
+]; */
 
 const notificationIcons = {
     success: CheckCheck,

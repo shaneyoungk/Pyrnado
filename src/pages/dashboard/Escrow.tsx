@@ -22,7 +22,7 @@ import InfoTooltip from "@/components/dashboard/InfoTooltip";
 import StatusBadge from "@/components/dashboard/StatusBadge";
 import DetailPanel from "@/components/dashboard/DetailPanel";
 import { motion } from "framer-motion";
-import { useContracts } from "@/hooks/use-escrow";
+import { useContracts, useReleaseFunds } from "@/hooks/use-escrow";
 import { NewContractWizard } from "@/components/dashboard/modals/NewContractWizard";
 
 interface Milestone {
@@ -63,6 +63,7 @@ export default function Escrow() {
     const [isNewContractOpen, setIsNewContractOpen] = useState(false);
 
     const { data: allContracts = [], isLoading } = useContracts();
+    const releaseFunds = useReleaseFunds();
 
     const filteredContracts = allContracts.filter((contract: Contract) => {
         const matchesSearch =
@@ -431,7 +432,7 @@ export default function Escrow() {
                                                 </div>
 
                                                 {milestone.status === "in-progress" && (
-                                                    <Button size="sm" className="h-7 px-3 rounded-lg text-xs shadow-sm">
+                                                    <Button onClick={() => releaseFunds.mutate({ contractId: selectedContract.id, data: { milestoneId: milestone.id, amount: milestone.amount } })} disabled={releaseFunds.isPending} size="sm" className="h-7 px-3 rounded-lg text-xs shadow-sm">
                                                         <Unlock className="w-3 h-3 mr-1" />
                                                         Release
                                                     </Button>
@@ -464,7 +465,7 @@ export default function Escrow() {
 
                         {/* Actions */}
                         <div className="flex gap-3">
-                            <Button variant="secondary" className="flex-1 h-10 rounded-lg border border-border">
+                            <Button onClick={() => selectedContract.contractAddress && window.open(`https://etherscan.io/address/${selectedContract.contractAddress}`, '_blank', 'noopener,noreferrer')} variant="secondary" className="flex-1 h-10 rounded-lg border border-border">
                                 View on Explorer
                             </Button>
                             {selectedContract.status === "disputed" && (

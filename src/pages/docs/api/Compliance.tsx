@@ -43,7 +43,7 @@ export default function ComplianceAPI() {
                         <CodeWindow
                             language="bash"
                             title="cURL"
-                            code={`curl https://api.pyrnado.com/v1/compliance/verify \\
+                            code={`curl https://api.zapzive.com/v1/compliance/verify \\
   -d full_name="Jane Doe" \\
   -d dob="1990-01-01" \\
   -d document_type="passport"`}
@@ -92,3 +92,4 @@ function ResponseCode({ code, desc, color }: { code: string; desc: string; color
         </div>
     );
 }
+

@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useLogin } from '@/hooks/use-auth';
-import { PyrnadoLogo } from '@/components/ui/PyrnadoLogo';
+import { ZapziveLogo } from '@/components/ui/ZapziveLogo';
+import DarkVeil from "@/components/ui/DarkVeil";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -77,11 +78,18 @@ export default function Login() {
 
 
     return (
-        <div className="min-h-screen bg-[#020202] flex items-center justify-center p-4 relative overflow-hidden">
-            {/* Background Effects */}
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay pointer-events-none" />
-            <div className="absolute top-[-20%] left-[50%] -translate-x-1/2 w-[1200px] h-[1200px] bg-emerald-500/5 rounded-full blur-[200px]" />
-            <div className="absolute bottom-[-20%] right-[-10%] w-[800px] h-[800px] bg-blue-500/5 rounded-full blur-[150px]" />
+        <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden selection:bg-emerald-500/30">
+            {/* Dynamic Background */}
+            <div className="fixed inset-0 z-0 pointer-events-none bg-black">
+                <DarkVeil
+                    hueShift={160}
+                    noiseIntensity={0.02}
+                    scanlineIntensity={0.05}
+                    speed={0.2}
+                    scanlineFrequency={0.8}
+                    warpAmount={0.15}
+                />
+            </div>
 
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -99,11 +107,11 @@ export default function Login() {
                     >
                         <Link to="/" className="inline-block mx-auto text-center">
                             <div className="w-16 h-16 flex justify-center">
-                                <PyrnadoLogo />
+                                <ZapziveLogo />
                             </div>
                         </Link>
                     </motion.div>
-                    <h1 className="text-4xl font-bold text-white mb-3 tracking-tight">
+                    <h1 className="text-4xl font-extrabold text-zinc-50 mb-3 tracking-tight">
                         Welcome Back
                     </h1>
                     <p className="text-zinc-400 text-lg">Sign in to continue to your dashboard</p>
@@ -114,7 +122,7 @@ export default function Login() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
-                    className="bg-zinc-900/50 backdrop-blur-xl border border-zinc-800/50 rounded-2xl p-8 shadow-2xl"
+                    className="bg-gradient-to-br from-[#111] via-[#050505] to-black backdrop-blur-xl border border-zinc-700/50 rounded-[2rem] p-8 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.8)]"
                 >
                     <form onSubmit={handleSubmit} className="space-y-5">
                         {/* Email */}
@@ -156,7 +164,7 @@ export default function Login() {
                                 <Label htmlFor="password" className="text-zinc-300 font-medium">
                                     Password
                                 </Label>
-                                <Link to="/forgot-password" className="text-sm text-emerald-400 hover:text-emerald-300 transition-colors">
+                            <Link to="/contact" className="text-sm text-emerald-400 hover:text-emerald-300 transition-colors">
                                     Forgot?
                                 </Link>
                             </div>
@@ -192,7 +200,7 @@ export default function Login() {
                         <Button
                             type="submit"
                             disabled={loginMutation.isPending}
-                            className="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold py-6 rounded-xl transition-all duration-300 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+                            className="w-full bg-white hover:bg-zinc-200 text-black font-bold py-6 rounded-xl transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed mt-6"
                         >
                             {loginMutation.isPending ? (
                                 <span className="flex items-center justify-center gap-2">
@@ -224,7 +232,7 @@ export default function Login() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.4 }}
-                    className="mt-6 bg-zinc-900/30 border border-zinc-800/50 rounded-xl p-4 backdrop-blur-sm"
+                    className="mt-6 bg-gradient-to-br from-[#111] to-black border border-zinc-700/50 rounded-xl p-4 shadow-xl"
                 >
                     <p className="text-zinc-400 text-sm text-center mb-2 font-medium">Demo Credentials</p>
                     <div className="flex flex-col gap-1">
@@ -241,3 +249,4 @@ export default function Login() {
         </div>
     );
 }
+

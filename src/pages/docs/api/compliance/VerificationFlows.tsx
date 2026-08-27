@@ -53,7 +53,7 @@ export default function VerificationFlows() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="create-session.bash"
-                            code={`curl https://api.pyrnado.com/v1/compliance/sessions \\
+                            code={`curl https://api.zapzive.com/v1/compliance/sessions \\
   -d redirect_url="https://your-app.com/done" \\
   -d worker_id="wkr_123"`}
                         />
@@ -67,10 +67,10 @@ export default function VerificationFlows() {
                 <CodeWindow
                     language="typescript"
                     title="verify.tsx"
-                    code={`import { PyrnadoVerify } from '@pyrnado/verify-js';
+                    code={`import { zapziveVerify } from '@zapzive/verify-js';
 
 const startVerification = () => {
-  PyrnadoVerify.init({
+  zapziveVerify.init({
     sessionUrl: data.session_url,
     onComplete: (res) => console.log('Verified!', res),
     onCancel: () => console.log('User quit')
@@ -112,3 +112,4 @@ function ResponseCode({ code, desc, color }: { code: string; desc: string; color
         </div>
     );
 }
+

@@ -11,7 +11,7 @@ export default function PythonSDK() {
                     <Badge variant="outline" className="border-blue-500/20 text-blue-400">Official</Badge>
                 </div>
                 <p className="text-lg text-zinc-400 leading-relaxed max-w-3xl">
-                    The Pyrnado Python library provides convenient access to the Pyrnado REST API
+                    The zapzive Python library provides convenient access to the zapzive REST API
                     from applications written in the Python language. Suitable for Django, Flask, and FastAPI.
                 </p>
             </div>
@@ -22,7 +22,7 @@ export default function PythonSDK() {
                     <Terminal className="w-5 h-5 text-blue-400" />
                     <h2 className="text-2xl font-bold text-white">Installation</h2>
                 </div>
-                <CodeWindow code="pip install pyrnado" language="bash" title="Terminal" />
+                <CodeWindow code="pip install zapzive" language="bash" title="Terminal" />
             </section>
 
             {/* Auth */}
@@ -34,11 +34,11 @@ export default function PythonSDK() {
                 <CodeWindow
                     language="python"
                     title="main.py"
-                    code={`import pyrnado
+                    code={`import zapzive
 
-pyrnado.api_key = "sk_test_..."
+zapzive.api_key = "sk_test_..."
 # Optional: Set a specific API version
-pyrnado.api_version = "2024-03-20"`}
+zapzive.api_version = "2024-03-20"`}
                 />
             </section>
 
@@ -52,10 +52,10 @@ pyrnado.api_version = "2024-03-20"`}
                     language="python"
                     title="async_app.py"
                     code={`import asyncio
-import pyrnado
+import zapzive
 
 async def create_transfer():
-    transfer = await pyrnado.Transfer.create_async(
+    transfer = await zapzive.Transfer.create_async(
         amount=1000,
         currency="usd",
         recipient="rcpt_1"
@@ -80,3 +80,4 @@ asyncio.run(create_transfer())`}
         </div>
     );
 }
+

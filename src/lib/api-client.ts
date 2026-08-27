@@ -99,6 +99,11 @@ class ApiClient {
         return data;
     }
 
+    async getPayrollBatch(id: string) {
+        const { data } = await this.client.get(`/payroll/batches/${id}`);
+        return data;
+    }
+
     async createPayrollBatch(batchData: any) {
         const { data } = await this.client.post('/payroll/batches', batchData);
         return data;

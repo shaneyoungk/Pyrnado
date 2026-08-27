@@ -1,37 +1,42 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Shield, Lock, Eye, FileCheck, Fingerprint, Globe } from "lucide-react";
+import { Shield, Lock, Eye, FileCheck, Fingerprint, Globe, KeyRound } from "lucide-react";
 
 const securityFeatures = [
   {
     icon: Shield,
-    title: "Non-Custodial Architecture",
-    description: "We never hold your funds. Smart contracts handle the flow directly from your wallet to the recipient.",
+    title: "Non-custodial treasury controls",
+    description: "Configure treasury movement without giving up operational visibility or approval discipline.",
   },
   {
     icon: Lock,
-    title: "Audited Smart Contracts",
-    description: "Our payment logic is audited by top firms, ensuring 100% security for all automated flows.",
+    title: "Role-based approvals",
+    description: "Require sign-off by amount, corridor, recipient, escrow release, or risk review state.",
   },
   {
     icon: FileCheck,
-    title: "KYC/AML Compliance",
-    description: "Built-in identity verification and risk scoring to meet global regulatory standards.",
+    title: "KYC and AML workflows",
+    description: "Attach identity, counterparty, and review status to each payout and escrow movement.",
   },
   {
     icon: Eye,
-    title: "On-Chain Audit Trails",
-    description: "Every transaction is permanently recorded on the blockchain for complete transparency.",
+    title: "Audit-ready records",
+    description: "Keep approval logs, settlement events, FX references, receipts, and compliance notes in one trail.",
   },
   {
     icon: Fingerprint,
-    title: "Multi-Sig Security",
-    description: "Require multiple approvals for high-volume transactions or sensitive configuration changes.",
+    title: "Multi-party approval flows",
+    description: "Separate request, review, approval, and release permissions for sensitive operations.",
   },
   {
     icon: Globe,
-    title: "Country-Specific Compliance",
-    description: "Tailored off-ramps ensuring local regulatory adherence in 40+ countries.",
+    title: "Transaction monitoring",
+    description: "Flag unusual activity, high-risk counterparties, and payout corridor exceptions before release.",
+  },
+  {
+    icon: KeyRound,
+    title: "Secure API access",
+    description: "Use API keys, sandbox mode, idempotency, webhooks, and logs for controlled integration.",
   },
 ];
 
@@ -48,8 +53,7 @@ export function SecuritySection() {
 
   return (
     <section ref={ref} className="py-32 lg:py-40 relative overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute top-1/2 left-0 w-[600px] h-[600px] bg-emerald-500/5 rounded-full blur-[150px]" />
+      {/* Background glow - Removed as requested */}
 
       <div className="container mx-auto relative z-10 px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-20 items-center">
@@ -59,15 +63,14 @@ export function SecuritySection() {
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="tag tag-accent mb-6 inline-block">Security First</span>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-8 leading-tight">
-              Enterprise-grade
+            <span className="tag text-[10px] font-black uppercase tracking-[0.2em] bg-brand-500/10 text-brand-400 border border-brand-500/20 px-3 py-1 rounded-full mb-6 inline-block">Trust Architecture</span>
+            <h2 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-zinc-50 mb-8 leading-tight tracking-tight uppercase">
+              Built for secure
               <br />
-              <span className="text-emerald-400">compliance</span>
+              <span className="text-brand-500">financial operations</span>
             </h2>
             <p className="text-xl sm:text-2xl text-muted-foreground mb-12 leading-relaxed">
-              Built for regulated institutions. Audited smart contracts, KYC/AML checks,
-              and non-custodial architecture ensure your funds are always safe.
+              Zapzive gives teams visibility and control across every payout, approval, escrow release, and remittance flow, with audit-ready records and operational safeguards built in.
             </p>
 
             {/* Security partners */}
@@ -75,14 +78,14 @@ export function SecuritySection() {
               {partners.map((partner) => (
                 <div
                   key={partner.name}
-                  className="feature-card p-5 flex items-center gap-4"
+                  className="bg-transparent border border-white/5 p-5 flex items-center gap-4 rounded-2xl transition-colors"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-accent/15 flex items-center justify-center">
-                    <span className="text-lg font-bold text-accent">{partner.name[0]}</span>
+                  <div className="w-12 h-12 flex items-center justify-center">
+                    <span className="text-xl font-black text-brand-400">{partner.name[0]}</span>
                   </div>
                   <div>
-                    <p className="text-base font-bold text-foreground">{partner.name}</p>
-                    <p className="text-sm text-muted-foreground">{partner.desc}</p>
+                    <p className="text-base font-black text-white">{partner.name}</p>
+                    <p className="text-sm text-zinc-500 font-medium">{partner.desc}</p>
                   </div>
                 </div>
               ))}
@@ -102,13 +105,13 @@ export function SecuritySection() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.4, delay: 0.3 + index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="feature-card p-6 group"
+                className="bg-[#0d0f0f] p-6 group rounded-[20px] border border-white/10 hover:border-zinc-600 transition-all duration-500"
               >
-                <feature.icon className="w-7 h-7 text-accent mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="font-bold text-foreground text-base mb-2">
+                <feature.icon className="w-7 h-7 text-brand-500 mb-4 transition-transform group-hover:text-brand-400" />
+                <h4 className="font-extrabold text-zinc-50 text-lg mb-2 tracking-tight">
                   {feature.title}
                 </h4>
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <p className="text-sm text-zinc-400 leading-relaxed font-medium">
                   {feature.description}
                 </p>
               </motion.div>

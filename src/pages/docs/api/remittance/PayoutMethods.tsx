@@ -24,7 +24,7 @@ export default function PayoutMethods() {
             </div>
 
             <DocCallout icon={Globe} title="Multi-Rail Architecture">
-                Pyrnado intelligently routes transfers through the most cost-effective rail based on the destination country, amount, and speed requirements.
+                zapzive intelligently routes transfers through the most cost-effective rail based on the destination country, amount, and speed requirements.
             </DocCallout>
 
             {/* Methods Grid */}
@@ -71,7 +71,7 @@ export default function PayoutMethods() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="get-methods.bash"
-                            code={`curl https://api.pyrnado.com/v1/remittance/methods?country=PH&limit=5 \\
+                            code={`curl https://api.zapzive.com/v1/remittance/methods?country=PH&limit=5 \\
   -u sk_test_...:`}
                         />
                         <CodeWindow
@@ -137,3 +137,4 @@ function ResponseCode({ code, desc, color }: { code: string; desc: string; color
         </div>
     );
 }
+

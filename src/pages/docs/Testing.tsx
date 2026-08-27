@@ -11,14 +11,14 @@ export default function Testing() {
                 <h1 className="text-5xl font-bold text-white tracking-tight">Testing & Sandbox</h1>
                 <p className="text-xl text-zinc-400 leading-relaxed max-w-3xl">
                     Our dedicated Sandbox environment allows you to simulate every part of the
-                    Pyrnado lifecycle—from bank settlement to KYC rejection—without any
+                    zapzive lifecycle—from bank settlement to KYC rejection—without any
                     financial risk or regulatory overhead.
                 </p>
             </section>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <DocCallout type="info" title="Environment URL">
-                    To target the sandbox, use the base URL <code className="text-white">https://api.sandbox.pyrnado.com</code>
+                    To target the sandbox, use the base URL <code className="text-white">https://api.sandbox.zapzive.com</code>
                     or simply use your `sk_test_...` key with our SDKs.
                 </DocCallout>
                 <DocCallout type="warning" title="No Real Money">
@@ -70,7 +70,7 @@ export default function Testing() {
                 <CodeWindow
                     language="typescript"
                     title="webhook.test.ts"
-                    code={`it('should handle successful payout events', async () => {\n  const res = await request(app)\n    .post('/webhooks')\n    .send(testPayoutPaidEvent)\n    .set('Pyrnado-Signature', 'mock_sig');\n\n  expect(res.status).toBe(200);\n  expect(updateDatabase).toHaveBeenCalled();\n});`}
+                    code={`it('should handle successful payout events', async () => {\n  const res = await request(app)\n    .post('/webhooks')\n    .send(testPayoutPaidEvent)\n    .set('zapzive-Signature', 'mock_sig');\n\n  expect(res.status).toBe(200);\n  expect(updateDatabase).toHaveBeenCalled();\n});`}
                 />
             </section>
 
@@ -101,3 +101,4 @@ function TestRow({ scenario, trigger, result, color }: { scenario: string; trigg
         </tr>
     );
 }
+

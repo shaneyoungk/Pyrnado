@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import prisma from '../lib/prisma';
+import jwt from 'jsonwebtoken';
 
 export interface AuthRequest extends Request {
     user?: any;
@@ -14,7 +15,10 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
             return res.status(401).json({ error: 'Unauthorized', message: 'No token provided' });
         }
 
-        const token = authHeader.split(' ')[1];
+        const token = authHeader.slice('Bearer '.length).trim();
+        if (!token) {
+            return res.status(401).json({ error: 'Unauthorized', message: 'Empty token provided' });
+        }
 
         // In this implementation, the token is the user's ID or a random string stored in the "user" object's "token" field
         // Since the current schema doesn't have a Token model, we'll assume the token matches a user's session
@@ -37,8 +41,25 @@ export const authMiddleware = async (req: AuthRequest, res: Response, next: Next
         // Actually, let's keep it robust. I'll search for a user with that email if we had it, 
         // but since we only have the token, I'll assume the token IS the user ID for this refined implementation.
 
+        const secret = process.env.JWT_SECRET;
+        if (!secret || secret.length < 32) {
+            console.error('JWT_SECRET is missing or too short');
+            return res.status(500).json({ error: 'Authentication is not configured securely' });
+        }
+
+        let payload: { sub?: string };
+        try {
+            payload = jwt.verify(token, secret) as { sub?: string };
+        } catch {
+            return res.status(401).json({ error: 'Unauthorized', message: 'Invalid or expired token' });
+        }
+
+        if (!payload.sub) {
+            return res.status(401).json({ error: 'Unauthorized', message: 'Invalid token subject' });
+        }
+
         const user = await prisma.user.findUnique({
-            where: { id: token },
+            where: { id: payload.sub },
             include: { company: true }
         });
 

@@ -53,7 +53,7 @@ export default function TransactionTracking() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="track-transfer.bash"
-                            code={`curl https://api.pyrnado.com/v1/remittance/tr_A9B8C7 \\
+                            code={`curl https://api.zapzive.com/v1/remittance/tr_A9B8C7 \\
   -u sk_test_...:`}
                         />
                         <CodeWindow
@@ -64,7 +64,7 @@ export default function TransactionTracking() {
   "status": "in_transit",
   "rail_status": "submitted_to_sepa",
   "eta": "2024-03-24T14:30:00Z",
-  "tracking_url": "https://trace.pyrnado.com/tr_A9B8C7"
+  "tracking_url": "https://trace.zapzive.com/tr_A9B8C7"
 }`}
                         />
                     </div>
@@ -97,7 +97,7 @@ export default function TransactionTracking() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="update-metadata.bash"
-                            code={`curl -X PATCH https://api.pyrnado.com/v1/remittance/tr_A9B8C7 \\
+                            code={`curl -X PATCH https://api.zapzive.com/v1/remittance/tr_A9B8C7 \\
   -d metadata[internal_batch_id]="B-992"`}
                         />
                     </div>
@@ -148,3 +148,4 @@ function ResponseCode({ code, desc, color }: { code: string; desc: string; color
         </div>
     );
 }
+

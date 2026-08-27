@@ -24,7 +24,7 @@ export default function WebhookManagement() {
             </div>
 
             <DocCallout icon={ShieldCheck} title="Signed Payloads">
-                All webhook requests include a `Pyrnado-Signature` header. Always verify this signature using your endpoint's signing secret to prevent spoofing attacks.
+                All webhook requests include a `zapzive-Signature` header. Always verify this signature using your endpoint's signing secret to prevent spoofing attacks.
             </DocCallout>
 
             {/* --- ENDPOINT: CREATE WEBHOOK --- */}
@@ -53,8 +53,8 @@ export default function WebhookManagement() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="register-webhook.bash"
-                            code={`curl https://api.pyrnado.com/v1/settings/webhooks \\
-  -d url="https://api.myapp.com/webhooks/pyrnado" \\
+                            code={`curl https://api.zapzive.com/v1/settings/webhooks \\
+  -d url="https://api.myapp.com/webhooks/zapzive" \\
   -d events[0]="payout.paid" \\
   -d events[1]="payout.failed"`}
                         />
@@ -88,7 +88,7 @@ export default function WebhookManagement() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="test-webhook.bash"
-                            code={`curl https://api.pyrnado.com/v1/settings/webhooks/whk_123/test`}
+                            code={`curl https://api.zapzive.com/v1/settings/webhooks/whk_123/test`}
                         />
                     </div>
                 </div>
@@ -125,3 +125,4 @@ function ResponseCode({ code, desc, color }: { code: string; desc: string; color
         </div>
     );
 }
+

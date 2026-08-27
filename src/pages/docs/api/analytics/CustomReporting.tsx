@@ -53,7 +53,7 @@ export default function CustomReporting() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="create-report.bash"
-                            code={`curl https://api.pyrnado.com/v1/analytics/reports \\
+                            code={`curl https://api.zapzive.com/v1/analytics/reports \\
   -d type="transaction_ledger" \\
   -d format="csv" \\
   -d columns[0]="worker_id" \\
@@ -88,7 +88,7 @@ export default function CustomReporting() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="get-report.bash"
-                            code={`curl https://api.pyrnado.com/v1/analytics/reports/rep_882`}
+                            code={`curl https://api.zapzive.com/v1/analytics/reports/rep_882`}
                         />
                     </div>
                 </div>
@@ -134,3 +134,4 @@ function ResponseCode({ code, desc, color }: { code: string; desc: string; color
         </div>
     );
 }
+

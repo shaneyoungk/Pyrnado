@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     Wallet,
     TrendingUp,
@@ -15,7 +16,7 @@ import InfoTooltip from "@/components/dashboard/InfoTooltip";
 import StatusBadge from "@/components/dashboard/StatusBadge";
 import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 import { motion } from "framer-motion";
-import { useAssets, usePortfolio } from "@/hooks/use-treasury";
+import { useAssets, usePortfolio, useSwap } from "@/hooks/use-treasury";
 import AssetIcon from "@/components/dashboard/AssetIcon";
 
 interface Asset {
@@ -29,56 +30,20 @@ interface Asset {
     icon: string;
 }
 
-// Fallback Mock Data
-const MOCK_ASSETS: Asset[] = [
-    {
-        symbol: "USDC",
-        name: "USD Coin",
-        balance: 45230.50,
-        usdValue: 45230.50,
-        change24h: 0.01,
-        chain: "Ethereum",
-        color: "#2775CA",
-        icon: "https://cryptologos.cc/logos/usd-coin-usdc-logo.svg?v=024"
-    },
-    {
-        symbol: "ETH",
-        name: "Ethereum",
-        balance: 3.56,
-        usdValue: 8727.58,
-        change24h: 2.34,
-        chain: "Ethereum",
-        color: "#627EEA",
-        icon: "https://cryptologos.cc/logos/ethereum-eth-logo.svg?v=024"
-    },
-    {
-        symbol: "USDT",
-        name: "Tether",
-        balance: 12450.00,
-        usdValue: 12450.00,
-        change24h: -0.02,
-        chain: "Ethereum",
-        color: "#26A17B",
-        icon: "https://cryptologos.cc/logos/tether-usdt-logo.svg?v=024"
-    }
-];
-
-const MOCK_PORTFOLIO = Array.from({ length: 7 }, (_, i) => ({
-    date: new Date(Date.now() - (6 - i) * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-    value: 65000 + Math.random() * 2000
-}));
-
 export default function Treasury() {
+    const navigate = useNavigate();
     const [swapFrom, setSwapFrom] = useState("USDC");
     const [swapTo, setSwapTo] = useState("ETH");
     const [swapAmount, setSwapAmount] = useState("");
 
     const { data: fetchedAssets = [], isLoading: assetsLoading } = useAssets();
     const { data: fetchedPortfolio = [], isLoading: portfolioLoading } = usePortfolio();
+    const swapMutation = useSwap();
 
-    // Use mock data if fetched data is empty (fallback)
-    const assets = fetchedAssets.length > 0 ? fetchedAssets : MOCK_ASSETS;
-    const portfolio = fetchedPortfolio.length > 0 ? fetchedPortfolio : MOCK_PORTFOLIO;
+    // Never substitute fabricated balances for an empty or failed API response.
+    // Financial screens must reflect persisted server state only.
+    const assets = fetchedAssets;
+    const portfolio = fetchedPortfolio;
 
     const totalValue = assets.reduce((sum: number, asset: Asset) => sum + asset.usdValue, 0);
 
@@ -97,16 +62,35 @@ export default function Treasury() {
         ? ((totalValue - portfolio[0].value) / portfolio[0].value) * 100
         : 0;
 
+    const exportPortfolio = () => {
+        const rows = [['Symbol', 'Name', 'Balance', 'USD Value', '24h Change', 'Chain'], ...assets.map((asset: Asset) => [
+            asset.symbol, asset.name, String(asset.balance), String(asset.usdValue), String(asset.change24h), asset.chain
+        ])];
+        const csv = rows.map((row) => row.map((value) => `"${value.replace(/"/g, '""')}"`).join(',')).join('\n');
+        const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = 'treasury-assets.csv';
+        anchor.click();
+        URL.revokeObjectURL(url);
+    };
+
+    const submitSwap = () => {
+        const amount = Number(swapAmount);
+        if (!Number.isFinite(amount) || amount <= 0 || swapFrom === swapTo) return;
+        swapMutation.mutate({ fromAsset: swapFrom, toAsset: swapTo, fromAmount: amount, toAmount: amount * 1.02, rate: 1.02, fee: amount * 0.003, chain: 'Ethereum' });
+    };
+
     return (
         <div className="p-4 lg:p-6 max-w-[1600px] mx-auto space-y-6 animate-fade-in">
             {/* Header */}
             <div className="flex items-center justify-end pb-3">
                 <div className="flex gap-2">
-                    <Button variant="outline" className="h-8 px-4 text-[10px] font-semibold border-zinc-800 bg-[#111] text-zinc-400 hover:text-white hover:bg-[#222]">
+                    <Button onClick={exportPortfolio} disabled={!assets.length} variant="outline" className="h-8 px-4 text-[10px] font-semibold border-zinc-800 bg-[#111] text-zinc-400 hover:text-white hover:bg-[#222]">
                         <Download className="w-3 h-3 mr-2" />
                         Export
                     </Button>
-                    <Button className="h-8 px-4 text-[10px] font-bold bg-white text-black hover:bg-zinc-200">
+                    <Button onClick={() => navigate('/dashboard/treasury/transfer')} className="h-8 px-4 text-[10px] font-bold bg-white text-black hover:bg-zinc-200">
                         <Plus className="w-3 h-3 mr-2" />
                         Add Funds
                     </Button>
@@ -321,7 +305,7 @@ export default function Treasury() {
 
                         {/* Swap Button */}
                         <div className="flex justify-center -my-2">
-                            <button className="w-10 h-10 rounded-xl bg-[#222] hover:bg-[#333] flex items-center justify-center transition-colors border border-[#333]">
+                            <button onClick={() => { setSwapFrom(swapTo); setSwapTo(swapFrom); }} className="w-10 h-10 rounded-xl bg-[#222] hover:bg-[#333] flex items-center justify-center transition-colors border border-[#333]" aria-label="Swap direction">
                                 <ArrowUpDown className="w-4 h-4 text-zinc-400" />
                             </button>
                         </div>
@@ -366,7 +350,7 @@ export default function Treasury() {
                         )}
 
                         {/* Swap Button */}
-                        <Button className="btn-primary w-full h-11 rounded-lg">
+                        <Button onClick={submitSwap} disabled={swapMutation.isPending || !swapAmount || swapFrom === swapTo} className="btn-primary w-full h-11 rounded-lg">
                             <Repeat className="w-4 h-4 mr-2" />
                             Swap Assets
                         </Button>

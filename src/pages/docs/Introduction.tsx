@@ -20,7 +20,7 @@ export default function Introduction() {
                     </h1>
                 </div>
                 <p className="text-xl text-zinc-400 leading-relaxed max-w-3xl">
-                    Pyrnado is a unified API for global payments, treasury, and compliance.
+                    zapzive is a unified API for global payments, treasury, and compliance.
                     Integrating with local bank rails in 180+ countries through a single,
                     world-class developer experience.
                 </p>
@@ -63,7 +63,7 @@ export default function Introduction() {
             {/* Integration Flow */}
             <section className="space-y-12">
                 <div className="text-center space-y-4">
-                    <h2 className="text-3xl font-bold text-white">The Pyrnado Ecosystem</h2>
+                    <h2 className="text-3xl font-bold text-white">The zapzive Ecosystem</h2>
                     <p className="text-zinc-500">How our different modules work together to power your platform.</p>
                 </div>
 
@@ -124,3 +124,4 @@ function FlowItem({ step, title, desc, icon }: { step: string; title: string; de
         </div>
     );
 }
+

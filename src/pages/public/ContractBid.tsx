@@ -13,6 +13,7 @@ import {
     Loader2,
     Check,
     XCircle
+    ,Shield
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,7 +21,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { PyrnadoLogo } from "@/components/ui/PyrnadoLogo";
+import { ZapziveLogo } from "@/components/ui/ZapziveLogo";
 import axios from "axios";
 import { toast } from "sonner";
 
@@ -37,7 +38,7 @@ const SignupBanner = () => (
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.8)] animate-pulse" />
                             Instant Global Settlement
                         </div>
-                        <h3 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">Join the Pyrnado Ecosystem</h3>
+                        <h3 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">Join the zapzive Ecosystem</h3>
                         <p className="text-zinc-300 text-lg leading-relaxed max-w-xl font-light mx-auto md:mx-0">
                             Unlock institutional-grade escrow, instant global settlements, and verified identity.
                         </p>
@@ -183,7 +184,7 @@ export default function ContractBid() {
                     {/* Header */}
                     <div className="space-y-6">
                         <div className="flex items-center gap-4">
-                            <PyrnadoLogo size="sm" />
+                            <ZapziveLogo size="sm" />
                             <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-zinc-900/50 border border-white/[0.03] backdrop-blur-sm self-center">
                                 <Vault className="w-3.5 h-3.5 text-zinc-400" />
                                 <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest">Secured Escrow</span>
@@ -289,9 +290,9 @@ export default function ContractBid() {
             <div className="max-w-7xl mx-auto p-6 lg:p-8 space-y-8">
                 {/* Header */}
                 <div className="space-y-6">
-                    {/* Pyrnado Branding */}
+                    {/* zapzive Branding */}
                     <div className="flex items-center gap-4">
-                        <PyrnadoLogo size="sm" />
+                        <ZapziveLogo size="sm" />
                         <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-zinc-900/50 border border-white/[0.03] backdrop-blur-sm self-center">
                             <Vault className="w-3.5 h-3.5 text-zinc-400" />
                             <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest">Secured Escrow</span>
@@ -469,3 +470,4 @@ export default function ContractBid() {
         </div>
     );
 }
+

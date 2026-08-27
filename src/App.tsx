@@ -12,6 +12,7 @@ import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import Pricing from "./pages/Pricing";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import Overview from "./pages/dashboard/Overview";
 import Payroll from "./pages/dashboard/Payroll";
@@ -87,6 +88,7 @@ const App = () => (
             <Route path="/contact" element={<Contact />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/pricing" element={<Pricing />} />
             <Route path="/p/contract/:id" element={<ContractBid />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
 

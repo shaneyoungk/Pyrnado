@@ -53,7 +53,7 @@ export default function BatchProcessing() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="create-batch.bash"
-                            code={`curl https://api.pyrnado.com/v1/payroll/batches \\
+                            code={`curl https://api.zapzive.com/v1/payroll/batches \\
   -d payments[0][worker_id]="wkr_123" \\
   -d payments[0][amount]=250000 \\
   -d payments[1][worker_id]="wkr_456" \\
@@ -88,7 +88,7 @@ export default function BatchProcessing() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="get-batch.bash"
-                            code={`curl https://api.pyrnado.com/v1/payroll/batches/bat_772`}
+                            code={`curl https://api.zapzive.com/v1/payroll/batches/bat_772`}
                         />
                     </div>
                 </div>
@@ -127,3 +127,4 @@ function ResponseCode({ code, desc, color }: { code: string; desc: string; color
         </div>
     );
 }
+

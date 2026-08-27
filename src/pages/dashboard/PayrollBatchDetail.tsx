@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import apiClient from "@/lib/api-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,7 +20,7 @@ export default function PayrollBatchDetail() {
 
     const { data: batch, isLoading } = useQuery({
         queryKey: ['payroll', 'batch', id],
-        queryFn: () => apiClient.client.get(`/payroll/batches/${id}`).then(res => res.data),
+        queryFn: () => apiClient.getPayrollBatch(id!),
         enabled: !!id
     });
 

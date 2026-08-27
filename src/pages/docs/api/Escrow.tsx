@@ -44,7 +44,7 @@ export default function EscrowAPI() {
                         <CodeWindow
                             language="bash"
                             title="cURL"
-                            code={`curl https://api.pyrnado.com/v1/escrow/contracts \\
+                            code={`curl https://api.zapzive.com/v1/escrow/contracts \\
   -d client_id="cli_123" \\
   -d contractor_id="wkr_456" \\
   -d total_amount=1500000`}
@@ -94,3 +94,4 @@ function ResponseCode({ code, desc, color }: { code: string; desc: string; color
         </div>
     );
 }
+

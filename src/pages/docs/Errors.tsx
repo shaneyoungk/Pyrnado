@@ -9,7 +9,7 @@ export default function Errors() {
             <section className="space-y-6">
                 <h1 className="text-5xl font-bold text-white tracking-tight">Errors & Status</h1>
                 <p className="text-xl text-zinc-400 leading-relaxed max-w-3xl">
-                    Pyrnado uses standard HTTP response codes to indicate the success or
+                    zapzive uses standard HTTP response codes to indicate the success or
                     failure of an API request. Codes in the `4xx` range indicate an error
                     that failed given the information provided.
                 </p>
@@ -61,7 +61,7 @@ export default function Errors() {
                             <CodeRow code="404" meaning="Not Found" desc="The requested resource doesn't exist." />
                             <CodeRow code="409" meaning="Conflict" desc="The request conflicts with another request (e.g. using the same idempotency key)." />
                             <CodeRow code="429" meaning="Too Many Requests" desc="Rate limit exceeded. Slow down your requests." />
-                            <CodeRow code="5xx" meaning="Server Errors" desc="Something went wrong on Pyrnado's end. (Extremely rare)." />
+                            <CodeRow code="5xx" meaning="Server Errors" desc="Something went wrong on zapzive's end. (Extremely rare)." />
                         </tbody>
                     </table>
                 </div>
@@ -102,3 +102,4 @@ function CodeRow({ code, meaning, desc }: { code: string; meaning: string; desc:
         </tr>
     );
 }
+

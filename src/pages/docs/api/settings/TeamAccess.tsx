@@ -53,7 +53,7 @@ export default function TeamAccess() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="invite-member.bash"
-                            code={`curl https://api.pyrnado.com/v1/settings/team/invites \\
+                            code={`curl https://api.zapzive.com/v1/settings/team/invites \\
   -d email="ops@example.com" \\
   -d role="treasury_manager"`}
                         />
@@ -121,3 +121,4 @@ function ResponseCode({ code, desc, color }: { code: string; desc: string; color
         </div>
     );
 }
+

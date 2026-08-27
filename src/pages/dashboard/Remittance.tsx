@@ -455,11 +455,19 @@ export default function Remittance() {
                         {/* Actions */}
                         <div className="flex gap-3">
                             {selectedRemittance.txHash && (
-                                <Button className="btn-secondary flex-1 h-10 rounded-lg">
+                                <Button onClick={() => window.open(`https://etherscan.io/tx/${selectedRemittance.txHash}`, '_blank', 'noopener,noreferrer')} className="btn-secondary flex-1 h-10 rounded-lg">
                                     View on Explorer
                                 </Button>
                             )}
-                            <Button className="btn-secondary flex-1 h-10 rounded-lg">
+                            <Button onClick={() => {
+                                const receipt = JSON.stringify(selectedRemittance, null, 2);
+                                const url = URL.createObjectURL(new Blob([receipt], { type: 'application/json' }));
+                                const anchor = document.createElement('a');
+                                anchor.href = url;
+                                anchor.download = `remittance-${selectedRemittance.id}.json`;
+                                anchor.click();
+                                URL.revokeObjectURL(url);
+                            }} className="btn-secondary flex-1 h-10 rounded-lg">
                                 Download Receipt
                             </Button>
                         </div>

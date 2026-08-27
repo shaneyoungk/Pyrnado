@@ -22,7 +22,7 @@ export default function GoLive() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-4">
                         <p className="text-zinc-400 leading-relaxed">
-                            Before you can process live payments, Pyrnado is required by law to verify your business identity.
+                            Before you can process live payments, zapzive is required by law to verify your business identity.
                             This process typically takes 1-2 business days.
                         </p>
                         <ul className="space-y-3">
@@ -79,7 +79,7 @@ export default function GoLive() {
                 </DocCallout>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <TaskBox icon={<ShieldCheck className="w-4 h-4" />} title="Verify HMAC Signatures" />
-                    <TaskBox icon={<Globe className="w-4 h-4" />} title="Allow Pyrnado IP Ranges" />
+                    <TaskBox icon={<Globe className="w-4 h-4" />} title="Allow zapzive IP Ranges" />
                     <TaskBox icon={<LayoutList className="w-4 h-4" />} title="Implement Idempotency" />
                     <TaskBox icon={<CheckCircle2 className="w-4 h-4" />} title="Test Failover Endpoints" />
                 </div>
@@ -118,3 +118,4 @@ function TaskBox({ icon, title }: { icon: any; title: string }) {
         </div>
     );
 }
+

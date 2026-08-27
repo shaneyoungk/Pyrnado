@@ -21,7 +21,7 @@ export default function EnterpriseExample() {
                     The <span className="text-emerald-500">Gigalith</span> Architecture
                 </h1>
                 <p className="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed relative z-10">
-                    How the world's fastest-growing delivery marketplace uses Pyrnado to onboard 50,000+ workers and manage $500M+ in monthly liquidity across 22 countries.
+                    How the world's fastest-growing delivery marketplace uses zapzive to onboard 50,000+ workers and manage $500M+ in monthly liquidity across 22 countries.
                 </p>
             </div>
 
@@ -57,7 +57,7 @@ export default function EnterpriseExample() {
                                 <Badge className="bg-emerald-500/20 text-emerald-400 text-[8px] h-4">LIVE</Badge>
                             </div>
                             <div className="text-4xl font-bold text-white">$512,402,110.00</div>
-                            <div className="text-xs text-zinc-500 font-medium">Total Monthly Volume processed via Pyrnado</div>
+                            <div className="text-xs text-zinc-500 font-medium">Total Monthly Volume processed via zapzive</div>
                         </div>
                         <div className="flex gap-4">
                             <div className="flex-1 p-6 bg-emerald-500/5 border border-emerald-500/10 rounded-2xl text-center">
@@ -95,7 +95,7 @@ export default function EnterpriseExample() {
                     code={`// Integrated into Gigalith Driver App (Background Process)
 async function setupCourierProfile(driverData) {
   // 1. Submit for Global KYC
-  const worker = await pyrnado.workers.create({
+  const worker = await zapzive.workers.create({
     ...driverData,
     compliance_tier: 'logistics_plus',
     auto_generate_wallet: true 
@@ -120,7 +120,7 @@ async function setupCourierProfile(driverData) {
                     </div>
                 </div>
                 <p className="text-zinc-400 leading-relaxed max-w-3xl">
-                    Gigalith implemented <a href="/docs/api/escrow/milestones" className="text-purple-400 hover:underline">Escrow Milestones</a> for merchant orders. When a customer places a $100 order, funds are instantly deposited into a Pyrnado Escrow Contract.
+                    Gigalith implemented <a href="/docs/api/escrow/milestones" className="text-purple-400 hover:underline">Escrow Milestones</a> for merchant orders. When a customer places a $100 order, funds are instantly deposited into a zapzive Escrow Contract.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-4">
@@ -138,7 +138,7 @@ async function setupCourierProfile(driverData) {
                     </div>
                     <CodeWindow
                         title="merchant-escrow.js"
-                        code={`const orderContract = await pyrnado.escrow.create({
+                        code={`const orderContract = await zapzive.escrow.create({
   amount: order.total,
   milestones: [
     { amount: order.total * 0.2, trigger: 'status.prep' },
@@ -187,7 +187,7 @@ async function setupCourierProfile(driverData) {
                 </div>
                 <div className="h-px bg-white/10 w-24 mx-auto" />
                 <p className="text-lg text-zinc-500 italic max-w-2xl mx-auto">
-                    "Pyrnado didn't just provide an API; they provided the financial operating system for our global expansion. We went from 5 countries to 22 in twelve months without hiring a single additional compliance officer."
+                    "zapzive didn't just provide an API; they provided the financial operating system for our global expansion. We went from 5 countries to 22 in twelve months without hiring a single additional compliance officer."
                 </p>
                 <div className="flex flex-col items-center gap-2">
                     <div className="font-bold text-white">Chen Wei</div>
@@ -212,3 +212,4 @@ async function setupCourierProfile(driverData) {
         </div>
     );
 }
+

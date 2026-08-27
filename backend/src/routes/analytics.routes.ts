@@ -1,10 +1,12 @@
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
 import prisma from '../lib/prisma';
+import { authMiddleware, AuthRequest } from '../middleware/auth.middleware';
 
 const router = Router();
+router.use(authMiddleware as any);
 
 // GET /api/analytics/overview - Analytics overview
-router.get('/overview', async (req: Request, res: Response) => {
+router.get('/overview', async (req: AuthRequest, res: Response) => {
     try {
         const [
             totalTransactions,
@@ -12,10 +14,10 @@ router.get('/overview', async (req: Request, res: Response) => {
             activeUsers,
             avgTransactionValue
         ] = await Promise.all([
-            prisma.transaction.count(),
-            prisma.transaction.aggregate({ _sum: { amount: true } }),
-            prisma.worker.count({ where: { kycStatus: 'verified' } }),
-            prisma.transaction.aggregate({ _avg: { amount: true } })
+            prisma.transaction.count({ where: { companyId: req.companyId } }),
+            prisma.transaction.aggregate({ _sum: { amount: true }, where: { companyId: req.companyId } }),
+            prisma.worker.count({ where: { companyId: req.companyId, kycStatus: 'verified' } }),
+            prisma.transaction.aggregate({ _avg: { amount: true }, where: { companyId: req.companyId } })
         ]);
 
         res.json({
@@ -30,16 +32,30 @@ router.get('/overview', async (req: Request, res: Response) => {
 });
 
 // GET /api/analytics/transactions - Transaction analytics
-router.get('/transactions', async (req: Request, res: Response) => {
+router.get('/transactions', async (req: AuthRequest, res: Response) => {
     try {
         const period = req.query.period as string || '30d';
 
-        // Mock data for transaction volume over time
-        const data = Array.from({ length: 12 }, (_, i) => ({
-            month: new Date(2024, i, 1).toLocaleString('default', { month: 'short' }),
-            volume: Math.floor(1000 + Math.random() * 1000),
-            count: Math.floor(100 + Math.random() * 200)
-        }));
+        const start = new Date();
+        start.setMonth(start.getMonth() - 11, 1);
+        start.setHours(0, 0, 0, 0);
+        const transactions = await prisma.transaction.findMany({
+            where: { companyId: req.companyId, timestamp: { gte: start } },
+            select: { amount: true, timestamp: true }
+        });
+        const data = Array.from({ length: 12 }, (_, index) => {
+            const date = new Date(start);
+            date.setMonth(start.getMonth() + index);
+            const monthTransactions = transactions.filter((transaction) =>
+                transaction.timestamp.getFullYear() === date.getFullYear() &&
+                transaction.timestamp.getMonth() === date.getMonth()
+            );
+            return {
+                month: date.toLocaleString('default', { month: 'short' }),
+                volume: monthTransactions.reduce((sum, transaction) => sum + transaction.amount, 0),
+                count: monthTransactions.length
+            };
+        });
 
         res.json(data);
     } catch (error) {
@@ -48,22 +64,29 @@ router.get('/transactions', async (req: Request, res: Response) => {
 });
 
 // GET /api/analytics/revenue - Revenue analytics
-router.get('/revenue', async (req: Request, res: Response) => {
+router.get('/revenue', async (req: AuthRequest, res: Response) => {
     try {
-        const fees = await prisma.transaction.aggregate({
-            _sum: { fees: true },
-            where: {
-                fees: { not: null }
-            }
+        const feeTransactions = await prisma.transaction.findMany({
+            where: { companyId: req.companyId, fees: { not: null } },
+            select: { fees: true, timestamp: true }
+        });
+        const totalFees = feeTransactions.reduce((sum, transaction) => sum + (transaction.fees || 0), 0);
+        const start = new Date();
+        start.setMonth(start.getMonth() - 11, 1);
+        start.setHours(0, 0, 0, 0);
+        const monthlyRevenue = Array.from({ length: 12 }, (_, index) => {
+            const date = new Date(start);
+            date.setMonth(start.getMonth() + index);
+            return {
+                month: date.toLocaleString('default', { month: 'short' }),
+                revenue: feeTransactions
+                    .filter((transaction) => transaction.timestamp.getFullYear() === date.getFullYear() && transaction.timestamp.getMonth() === date.getMonth())
+                    .reduce((sum, transaction) => sum + (transaction.fees || 0), 0)
+            };
         });
 
-        const monthlyRevenue = Array.from({ length: 12 }, (_, i) => ({
-            month: new Date(2024, i, 1).toLocaleString('default', { month: 'short' }),
-            revenue: Math.floor(5000 + Math.random() * 5000)
-        }));
-
         res.json({
-            totalFees: fees._sum.fees || 0,
+            totalFees,
             monthlyRevenue
         });
     } catch (error) {
@@ -72,12 +95,13 @@ router.get('/revenue', async (req: Request, res: Response) => {
 });
 
 // GET /api/analytics/geography - Geographic distribution
-router.get('/geography', async (req: Request, res: Response) => {
+router.get('/geography', async (req: AuthRequest, res: Response) => {
     try {
         const remittancesByCountry = await prisma.remittance.groupBy({
             by: ['recipientCountry'],
             _count: true,
-            _sum: { amount: true }
+            _sum: { amount: true },
+            where: { companyId: req.companyId }
         });
 
         const data = remittancesByCountry.map(item => ({
@@ -93,7 +117,7 @@ router.get('/geography', async (req: Request, res: Response) => {
 });
 
 // GET /api/analytics/export - Export analytics data
-router.get('/export', async (req: Request, res: Response) => {
+router.get('/export', async (req: AuthRequest, res: Response) => {
     try {
         const format = req.query.format as string || 'json';
         const type = req.query.type as string || 'transactions';
@@ -103,21 +127,24 @@ router.get('/export', async (req: Request, res: Response) => {
         switch (type) {
             case 'transactions':
                 data = await prisma.transaction.findMany({
+                    where: { companyId: req.companyId },
                     orderBy: { timestamp: 'desc' }
                 });
                 break;
             case 'remittances':
                 data = await prisma.remittance.findMany({
+                    where: { companyId: req.companyId },
                     include: { recipient: true }
                 });
                 break;
             case 'payroll':
                 data = await prisma.payrollBatch.findMany({
+                    where: { companyId: req.companyId },
                     include: { payments: true }
                 });
                 break;
             default:
-                data = await prisma.transaction.findMany();
+                data = await prisma.transaction.findMany({ where: { companyId: req.companyId } });
         }
 
         if (format === 'csv') {

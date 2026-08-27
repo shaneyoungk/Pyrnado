@@ -3,7 +3,7 @@ import { useRef } from "react";
 
 const testimonials = [
   {
-    quote: "Paying our Nigerian dev team used to take 5 days with Wise. Pyrnado settles in 3 seconds directly to their bank accounts.",
+    quote: "Paying our Nigerian dev team used to take 5 days with Wise. zapzive settles in 3 seconds directly to their bank accounts.",
     author: "Elena Rodriguez",
     role: "CTO",
     company: "TechNexus SF",
@@ -30,7 +30,7 @@ export function TestimonialsSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="py-32 lg:py-40 bg-muted/30">
+    <section ref={ref} className="py-32 lg:py-40 bg-transparent">
       <div className="container mx-auto px-6 lg:px-8">
         {/* Section header */}
         <motion.div
@@ -53,13 +53,13 @@ export function TestimonialsSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="premium-card p-8"
+              className="bg-[#0F0F10] p-8 rounded-3xl border border-white/10 shadow-2xl"
             >
               <p className="text-foreground text-lg leading-relaxed mb-8">
                 "{testimonial.quote}"
               </p>
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-accent/15 flex items-center justify-center text-base font-bold text-accent">
+                <div className="w-12 h-12 rounded-full bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-base font-bold text-brand-400">
                   {testimonial.initials}
                 </div>
                 <div>
@@ -76,3 +76,4 @@ export function TestimonialsSection() {
     </section>
   );
 }
+

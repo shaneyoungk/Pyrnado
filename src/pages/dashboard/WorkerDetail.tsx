@@ -58,7 +58,7 @@ export default function WorkerDetail() {
                 </div>
                 <div className="flex gap-3">
                     <Button variant="outline" className="border-zinc-800">Edit Details</Button>
-                    <Button className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold">Pay Worker</Button>
+                    <Button onClick={() => navigate(`/dashboard/payroll?worker=${worker.id}`)} className="bg-emerald-500 hover:bg-emerald-400 text-black font-bold">Pay Worker</Button>
                 </div>
             </div>
 

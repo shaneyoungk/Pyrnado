@@ -22,7 +22,7 @@ export default function ReactSDK() {
                     <Terminal className="w-5 h-5 text-blue-400" />
                     <h2 className="text-2xl font-bold text-white">Installation</h2>
                 </div>
-                <CodeWindow code="npm install @pyrnado/react" language="bash" title="Terminal" />
+                <CodeWindow code="npm install @zapzive/react" language="bash" title="Terminal" />
             </section>
 
             {/* Provider Setup */}
@@ -31,17 +31,17 @@ export default function ReactSDK() {
                     <Layers className="w-5 h-5 text-purple-400" />
                     <h2 className="text-2xl font-bold text-white">Provider Setup</h2>
                 </div>
-                <p className="text-zinc-500">Wrap your application in the `PyrnadoProvider` with your Publishable Key.</p>
+                <p className="text-zinc-500">Wrap your application in the `zapziveProvider` with your Publishable Key.</p>
                 <CodeWindow
                     language="tsx"
                     title="App.tsx"
-                    code={`import { PyrnadoProvider } from '@pyrnado/react';
+                    code={`import { zapziveProvider } from '@zapzive/react';
 
 function App() {
   return (
-    <PyrnadoProvider publishableKey="pk_test_...">
+    <zapziveProvider publishableKey="pk_test_...">
       <MyCommerceApp />
-    </PyrnadoProvider>
+    </zapziveProvider>
   );
 }`}
                 />
@@ -51,16 +51,16 @@ function App() {
             <section className="space-y-8">
                 <div className="flex items-center gap-3">
                     <Zap className="w-5 h-5 text-amber-400" />
-                    <h2 className="text-2xl font-bold text-white">The usePyrnado Hook</h2>
+                    <h2 className="text-2xl font-bold text-white">The usezapzive Hook</h2>
                 </div>
-                <p className="text-zinc-400">Access the Pyrnado instance anywhere in your component tree.</p>
+                <p className="text-zinc-400">Access the zapzive instance anywhere in your component tree.</p>
                 <CodeWindow
                     language="tsx"
                     title="BalanceSummary.tsx"
-                    code={`import { usePyrnado } from '@pyrnado/react';
+                    code={`import { usezapzive } from '@zapzive/react';
 
 export function BalanceSummary() {
-  const { balance, loading, error } = usePyrnado();
+  const { balance, loading, error } = usezapzive();
 
   if (loading) return <div>Loading...</div>;
 
@@ -75,3 +75,4 @@ export function BalanceSummary() {
         </div>
     );
 }
+

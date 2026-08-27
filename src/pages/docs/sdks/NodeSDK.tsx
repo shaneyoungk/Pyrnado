@@ -11,7 +11,7 @@ export default function NodeSDK() {
                     <Badge variant="outline" className="border-emerald-500/20 text-emerald-400">Official</Badge>
                 </div>
                 <p className="text-lg text-zinc-400 leading-relaxed max-w-3xl">
-                    The official Pyrnado Node.js library for server-side applications.
+                    The official zapzive Node.js library for server-side applications.
                     Built with TypeScript for full type safety and async/await support.
                 </p>
             </div>
@@ -22,7 +22,7 @@ export default function NodeSDK() {
                     <Terminal className="w-5 h-5 text-emerald-400" />
                     <h2 className="text-2xl font-bold text-white">Installation</h2>
                 </div>
-                <CodeWindow code="npm install @pyrnado/client" language="bash" title="Terminal" />
+                <CodeWindow code="npm install @zapzive/client" language="bash" title="Terminal" />
             </section>
 
             {/* Auth */}
@@ -35,10 +35,10 @@ export default function NodeSDK() {
                 <CodeWindow
                     language="typescript"
                     title="index.ts"
-                    code={`import { Pyrnado } from '@pyrnado/client';
+                    code={`import { zapzive } from '@zapzive/client';
 
-const client = new Pyrnado({
-  apiKey: process.env.PYRNADO_SECRET_KEY,
+const client = new zapzive({
+  apiKey: process.env.zapzive_SECRET_KEY,
   timeout: 10000, // 10s timeout
 });`}
                 />
@@ -87,3 +87,4 @@ function SDKFeature({ title, desc }: { title: string; desc: string }) {
         </div>
     );
 }
+

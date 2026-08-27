@@ -15,6 +15,8 @@ import MetricCard from "@/components/dashboard/MetricCard";
 import InfoTooltip from "@/components/dashboard/InfoTooltip";
 import { Area, AreaChart, Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 import { useAnalyticsOverview, useRevenueAnalytics, useTransactionAnalytics } from "@/hooks/use-analytics";
+import apiClient from "@/lib/api-client";
+import { toast } from "sonner";
 
 // Mocks removed
 
@@ -24,6 +26,21 @@ export default function Analytics() {
     const { data: revenueData = [], isLoading: revenueLoading } = useRevenueAnalytics();
     const { data: transactionVolumeData = [], isLoading: transactionLoading } = useTransactionAnalytics({ period: timeRange });
 
+    const exportReport = async () => {
+        try {
+            const report = await apiClient.exportAnalytics({ format: 'csv', type: 'transactions' });
+            const blob = new Blob([typeof report === 'string' ? report : JSON.stringify(report)], { type: 'text/csv;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const anchor = document.createElement('a');
+            anchor.href = url;
+            anchor.download = 'analytics-transactions.csv';
+            anchor.click();
+            URL.revokeObjectURL(url);
+        } catch {
+            toast.error('Unable to export analytics report');
+        }
+    };
+
     return (
         <div className="p-4 lg:p-6 max-w-[1600px] mx-auto space-y-6 animate-fade-in">
             {/* Header */}
@@ -32,7 +49,7 @@ export default function Analytics() {
                     <Calendar className="w-3 h-3 mr-2" />
                     Date Range
                 </Button>
-                <Button className="h-8 px-4 text-[10px] font-bold bg-white text-black hover:bg-zinc-200">
+                <Button onClick={exportReport} className="h-8 px-4 text-[10px] font-bold bg-white text-black hover:bg-zinc-200">
                     <Download className="w-3 h-3 mr-2" />
                     Export Report
                 </Button>
@@ -42,12 +59,12 @@ export default function Analytics() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="bg-[#111] border border-[#222] rounded-2xl p-5">
                     <div className="flex items-start justify-between mb-3">
-                        <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em]">Total Revenue</h3>
+                        <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em]">Total Volume</h3>
                     </div>
                     <h3 className="text-2xl font-medium tracking-tight text-white mb-1 font-mono tabular-nums">
-                        {overviewLoading ? "..." : `$${(overview?.totalRevenue || 0).toLocaleString()}`}
+                        {overviewLoading ? "..." : `$${(overview?.totalVolume || 0).toLocaleString()}`}
                     </h3>
-                    <p className="text-xs text-emerald-400 font-medium">+18.2% vs last period</p>
+                    <p className="text-xs text-zinc-500 font-medium">From recorded transactions</p>
                 </div>
 
                 <div className="bg-[#111] border border-[#222] rounded-2xl p-5">
@@ -57,7 +74,7 @@ export default function Analytics() {
                     <h3 className="text-2xl font-medium tracking-tight text-white mb-1 tabular-nums">
                         {overviewLoading ? "..." : (overview?.totalTransactions || 0).toLocaleString()}
                     </h3>
-                    <p className="text-xs text-emerald-400 font-medium">+12.5% vs last period</p>
+                    <p className="text-xs text-zinc-500 font-medium">All recorded transactions</p>
                 </div>
 
                 <div className="bg-[#111] border border-[#222] rounded-2xl p-5">
@@ -65,7 +82,7 @@ export default function Analytics() {
                         <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em]">Avg Transaction</h3>
                     </div>
                     <h3 className="text-2xl font-medium tracking-tight text-white mb-1 font-mono tabular-nums">
-                        {overviewLoading ? "..." : `$${(overview?.avgTransaction || 0).toFixed(2)}`}
+                        {overviewLoading ? "..." : `$${(overview?.avgTransactionValue || 0).toFixed(2)}`}
                     </h3>
                     <p className="text-xs text-zinc-500">Per transaction</p>
                 </div>
@@ -77,7 +94,7 @@ export default function Analytics() {
                     <h3 className="text-2xl font-medium tracking-tight text-white mb-1 tabular-nums">
                         {overviewLoading ? "..." : (overview?.activeUsers || 0).toLocaleString()}
                     </h3>
-                    <p className="text-xs text-emerald-400 font-medium">+8.3% growth</p>
+                    <p className="text-xs text-zinc-500 font-medium">Verified workers</p>
                 </div>
             </div>
 
@@ -209,9 +226,9 @@ export default function Analytics() {
                     </div>
                     <h4 className="text-sm font-semibold text-foreground mb-1">Remittances</h4>
                     <p className="text-2xl font-semibold text-foreground tabular-nums mb-1">
-                        {overviewLoading ? "..." : `$${(overview?.remittanceVolume || 3200).toLocaleString()}`}
+                        {overviewLoading ? "..." : `$${(overview?.remittanceVolume || 0).toLocaleString()}`}
                     </p>
-                    <p className="text-xs text-muted-foreground">{overview?.remittanceCount || 5} transactions</p>
+                    <p className="text-xs text-muted-foreground">{overview?.remittanceCount || 0} transactions</p>
                 </div>
             </div>
         </div>

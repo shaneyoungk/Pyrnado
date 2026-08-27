@@ -43,7 +43,7 @@ export default function TreasuryAPI() {
                         <CodeWindow
                             language="bash"
                             title="cURL"
-                            code={`curl https://api.pyrnado.com/v1/treasury/balances \\
+                            code={`curl https://api.zapzive.com/v1/treasury/balances \\
   -u sk_test_...:`}
                         />
                         <CodeWindow
@@ -80,7 +80,7 @@ export default function TreasuryAPI() {
                     <CodeWindow
                         language="bash"
                         title="cURL"
-                        code={`curl https://api.pyrnado.com/v1/treasury/refills \\
+                        code={`curl https://api.zapzive.com/v1/treasury/refills \\
   -d amount=1000000 \\
   -d currency="USD"`}
                     />
@@ -126,3 +126,4 @@ function TreasuryCard({ icon, title, desc }: { icon: any, title: string, desc: s
         </div>
     );
 }
+

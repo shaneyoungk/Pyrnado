@@ -74,7 +74,7 @@ export default function RemittanceAPI() {
                         <CodeWindow
                             language="bash"
                             title="cURL"
-                            code={`curl https://api.pyrnado.com/v1/remittance \\
+                            code={`curl https://api.zapzive.com/v1/remittance \\
   -u sk_test_...: \\
   -d recipient_id="rcpt_123" \\
   -d amount=5000 \\
@@ -120,7 +120,7 @@ export default function RemittanceAPI() {
                     <CodeWindow
                         language="bash"
                         title="cURL"
-                        code={`curl https://api.pyrnado.com/v1/remittance?limit=10 \\
+                        code={`curl https://api.zapzive.com/v1/remittance?limit=10 \\
   -u sk_test_...:`}
                     />
                 </div>
@@ -145,7 +145,7 @@ export default function RemittanceAPI() {
                     <CodeWindow
                         language="bash"
                         title="cURL"
-                        code={`curl https://api.pyrnado.com/v1/remittance/tr_123 \\
+                        code={`curl https://api.zapzive.com/v1/remittance/tr_123 \\
   -u sk_test_...:`}
                     />
                 </div>
@@ -170,7 +170,7 @@ export default function RemittanceAPI() {
                     <CodeWindow
                         language="bash"
                         title="cURL"
-                        code={`curl -X DELETE https://api.pyrnado.com/v1/remittance/tr_123 \\
+                        code={`curl -X DELETE https://api.zapzive.com/v1/remittance/tr_123 \\
   -u sk_test_...:`}
                     />
                 </div>
@@ -241,3 +241,4 @@ function APIHighlight({ icon, title, desc }: { icon: any; title: string; desc: s
         </div>
     );
 }
+

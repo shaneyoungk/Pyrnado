@@ -5,7 +5,7 @@ import { Shield, Lock, Key, AlertOctagon } from "lucide-react";
 
 export default function Authentication() {
     const authCode = `// Authenticate with your secret API key
-const client = new Pyrnado({
+const client = new zapzive({
   apiKey: 'sk_test_51Mz...',
   apiVersion: '2024-03-20'
 });`;
@@ -23,7 +23,7 @@ const client = new Pyrnado({
             <section className="space-y-6">
                 <h1 className="text-5xl font-bold text-white tracking-tight">Authentication</h1>
                 <p className="text-xl text-zinc-400 leading-relaxed max-w-3xl">
-                    The Pyrnado API uses API keys to authenticate requests. We follow the industry-standard
+                    The zapzive API uses API keys to authenticate requests. We follow the industry-standard
                     Basic Authentication scheme where your secret key is the username.
                 </p>
             </section>
@@ -88,7 +88,7 @@ const client = new Pyrnado({
                         <h3 className="text-sm font-bold text-zinc-500 uppercase tracking-widest">Plain HTTP Request</h3>
                         <code className="block p-4 rounded-xl bg-[#111] border border-white/10 text-zinc-400 font-mono text-[13px] leading-relaxed">
                             POST /v1/transfers HTTP/1.1<br />
-                            Host: api.pyrnado.com<br />
+                            Host: api.zapzive.com<br />
                             <span className="text-emerald-400">Authorization: Basic c2tfdGVzdF81MU16...</span><br />
                             Content-Type: application/json
                         </code>
@@ -147,3 +147,4 @@ function HighlightBox({ icon, title, desc }: { icon: any; title: string; desc: s
         </div>
     );
 }
+

@@ -10,7 +10,7 @@ export default function Quickstart() {
             <section className="space-y-6">
                 <h1 className="text-5xl font-bold text-white tracking-tight">Quickstart</h1>
                 <p className="text-xl text-zinc-400 leading-relaxed max-w-3xl">
-                    Get up and running with Pyrnado in minutes. This guide will walk you through
+                    Get up and running with zapzive in minutes. This guide will walk you through
                     obtaining your API keys, installing our SDK, and sending your first payment.
                 </p>
             </section>
@@ -42,8 +42,8 @@ export default function Quickstart() {
                         We recommend using them over raw HTTP requests.
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <CodeWindow language="bash" title="Node.js" code="npm install @pyrnado/client" />
-                        <CodeWindow language="bash" title="Python" code="pip install pyrnado" />
+                        <CodeWindow language="bash" title="Node.js" code="npm install @zapzive/client" />
+                        <CodeWindow language="bash" title="Python" code="pip install zapzive" />
                     </div>
                 </ProjectStep>
 
@@ -55,7 +55,7 @@ export default function Quickstart() {
                     <CodeWindow
                         language="typescript"
                         title="init.ts"
-                        code={`import { Pyrnado } from '@pyrnado/client';\n\nconst client = new Pyrnado({\n  apiKey: 'sk_test_...',\n  compliance: {\n    // Mandatory: Enforce KYC check before any financial action\n    strictMode: true,\n    onViolation: (err) => console.error('Compliance Gate!', err)\n  }\n});`}
+                        code={`import { zapzive } from '@zapzive/client';\n\nconst client = new zapzive({\n  apiKey: 'sk_test_...',\n  compliance: {\n    // Mandatory: Enforce KYC check before any financial action\n    strictMode: true,\n    onViolation: (err) => console.error('Compliance Gate!', err)\n  }\n});`}
                     />
                 </ProjectStep>
 
@@ -80,7 +80,7 @@ export default function Quickstart() {
 }`}
                     />
                     <DocCallout type="success" title="Verification">
-                        Check your <Link to="/dashboard/transactions" className="text-emerald-400">Transactions Dashboard</Link> to
+                        Check your <Link to="/dashboard" className="text-emerald-400">Transactions Dashboard</Link> to
                         see your test payment reflected in real-time.
                     </DocCallout>
                 </ProjectStep>
@@ -124,3 +124,4 @@ function NextStepCard({ title, desc, href }: { title: string; desc: string; href
         </Link>
     );
 }
+

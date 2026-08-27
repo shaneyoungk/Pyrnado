@@ -27,19 +27,12 @@ export function WorldMapSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [activeFlow, setActiveFlow] = useState(0);
 
-  useEffect(() => {
-    if (!isInView) return;
-    const interval = setInterval(() => {
-      setActiveFlow((prev) => (prev + 1) % flows.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [isInView]);
+  // Auto-flow transitions removed for static demo
 
   const getLocation = (id: string) => locations.find((l) => l.id === id)!;
 
   return (
-    <section ref={ref} className="py-24 lg:py-32 relative overflow-hidden">
-      <div className="absolute inset-0 bg-radial-center" />
+    <section ref={ref} className="py-24 lg:py-32 relative overflow-hidden bg-[#0A0A0A]">
 
       <div className="container mx-auto relative z-10">
         {/* Header */}
@@ -53,7 +46,7 @@ export function WorldMapSection() {
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6">
             Move money across
             <br />
-            <span className="text-emerald-400">borders instantly</span>
+            <span className="text-brand-400">borders instantly</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Real-time stablecoin payments flowing between 45+ countries.
@@ -114,7 +107,7 @@ export function WorldMapSection() {
                       <motion.circle
                         r="0.8"
                         fill="hsl(160 84% 50%)"
-                        filter="url(#glow)"
+                        className="path-animation"
                         initial={{ offsetDistance: "0%" }}
                         animate={{ offsetDistance: "100%" }}
                         transition={{ duration: 2, ease: "easeInOut" }}
@@ -143,17 +136,7 @@ export function WorldMapSection() {
                 return (
                   <g key={loc.id}>
                     {/* Ping effect for active locations */}
-                    {isActive && (
-                      <circle
-                        cx={loc.x}
-                        cy={loc.y}
-                        r="1"
-                        fill="none"
-                        stroke={isTarget ? "hsl(160 84% 50%)" : "hsl(190 90% 50%)"}
-                        strokeWidth="0.2"
-                        className="animate-ping-slow"
-                      />
-                    )}
+                    {/* Ping effect removed for static demo */}
 
                     {/* Main dot */}
                     <circle

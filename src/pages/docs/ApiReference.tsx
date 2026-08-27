@@ -5,7 +5,7 @@ import { ArrowRight, Globe, Shield, Terminal, Zap, Layers, Cpu } from "lucide-re
 import { Link } from "react-router-dom";
 
 export default function ApiReference() {
-    const authCode = `curl https://api.pyrnado.com/v1/transfers \\
+    const authCode = `curl https://api.zapzive.com/v1/transfers \\
   -u sk_test_...: \\
   -d amount=5000 \\
   -d currency="usd" \\
@@ -119,3 +119,4 @@ function ModuleBox({ title, href, icon }: { title: string; href: string; icon: a
         </Link>
     );
 }
+

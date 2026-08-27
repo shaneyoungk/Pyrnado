@@ -52,10 +52,11 @@ export default function DocsLayout() {
 
                     {/* Footer for Docs */}
                     <footer className="border-t border-white/5 py-10 mt-20 text-center text-xs text-zinc-600">
-                        <p>© {new Date().getFullYear()} Pyrnado Inc. • Developer Documentation</p>
+                        <p>© {new Date().getFullYear()} zapzive Inc. • Developer Documentation</p>
                     </footer>
                 </div>
             </div>
         </div>
     );
 }
+

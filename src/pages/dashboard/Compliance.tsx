@@ -16,6 +16,8 @@ import InfoTooltip from "@/components/dashboard/InfoTooltip";
 import StatusBadge from "@/components/dashboard/StatusBadge";
 import { motion } from "framer-motion";
 import { useComplianceItems } from "@/hooks/use-compliance";
+import apiClient from "@/lib/api-client";
+import { toast } from "sonner";
 
 interface ComplianceItem {
     id: string;
@@ -49,6 +51,20 @@ export default function Compliance() {
 
     const { data: allItems = [], isLoading } = useComplianceItems();
 
+    const generateReport = async () => {
+        try {
+            const report = await apiClient.getComplianceReports();
+            const url = URL.createObjectURL(new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' }));
+            const anchor = document.createElement('a');
+            anchor.href = url;
+            anchor.download = 'compliance-report.json';
+            anchor.click();
+            URL.revokeObjectURL(url);
+        } catch {
+            toast.error('Unable to generate compliance report');
+        }
+    };
+
     const filteredItems = allItems.filter((item: ComplianceItem) => {
         const matchesSearch =
             item.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -63,13 +79,15 @@ export default function Compliance() {
     const approvedCount = allItems.filter((i: ComplianceItem) => i.status === "approved").length;
     const pendingCount = allItems.filter((i: ComplianceItem) => i.status === "pending").length;
     const flaggedCount = allItems.filter((i: ComplianceItem) => i.status === "flagged").length;
-    const kycCompletion = 98; // Keeps hardcoded for now or fetch from separate stats hook
+    const kycItems = allItems.filter((item: ComplianceItem) => item.type === 'kyc');
+    const verifiedKyc = kycItems.filter((item: ComplianceItem) => item.status === 'approved').length;
+    const kycCompletion = kycItems.length > 0 ? Math.round((verifiedKyc / kycItems.length) * 100) : 0;
 
     return (
         <div className="p-4 lg:p-6 max-w-[1600px] mx-auto space-y-6 animate-fade-in">
             {/* Header */}
             <div className="flex items-center justify-end">
-                <Button className="h-8 px-4 text-[10px] font-bold bg-white text-black hover:bg-zinc-200">
+                <Button onClick={generateReport} className="h-8 px-4 text-[10px] font-bold bg-white text-black hover:bg-zinc-200">
                     <FileText className="w-3 h-3 mr-2" />
                     Generate Report
                 </Button>
@@ -82,7 +100,7 @@ export default function Compliance() {
                         <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em]">KYC Completion</h3>
                     </div>
                     <h3 className="text-2xl font-medium tracking-tight text-white mb-1 tabular-nums">{kycCompletion}%</h3>
-                    <p className="text-xs text-emerald-400 font-medium">47 of 48 verified</p>
+                    <p className="text-xs text-zinc-500 font-medium">{verifiedKyc} of {kycItems.length} verified</p>
                 </div>
 
                 <div className="bg-[#111] border border-[#222] rounded-2xl p-5">

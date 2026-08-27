@@ -1,10 +1,10 @@
-# Pyrnado (Global Pay Flow)
+# zapzive (Global Pay Flow)
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg) ![Status](https://img.shields.io/badge/status-Active-success.svg) ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white) ![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB) ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=flat&logo=node.js&logoColor=white)
 
-**Pyrnado** is an enterprise-grade financial operations platform engineered for the future of global business. It bridges the gap between traditional finance and blockchain technology, offering a unified dashboard for global liquidity management, automated payroll, milestone-based escrow, and cross-border remittances.
+**zapzive** is an enterprise-grade financial operations platform engineered for the future of global business. It bridges the gap between traditional finance and blockchain technology, offering a unified dashboard for global liquidity management, automated payroll, milestone-based escrow, and cross-border remittances.
 
-Designed for scalability and security, Pyrnado empowers organizations to manage multi-chain treasury assets alongside fiat operations with bank-grade compliance and real-time analytics.
+Designed for scalability and security, zapzive empowers organizations to manage multi-chain treasury assets alongside fiat operations with bank-grade compliance and real-time analytics.
 
 ---
 
@@ -66,8 +66,8 @@ Designed for scalability and security, Pyrnado empowers organizations to manage 
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/shanekizito/Pyrnado.git
-   cd Pyrnado
+   git clone https://github.com/shanekizito/zapzive.git
+   cd zapzive
    ```
 
 2. **Install Dependencies**
@@ -116,5 +116,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ---
 
 <p align="center">
-  Built with ❤️ by the Pyrnado Team
+  Built with ❤️ by the zapzive Team
 </p>
+

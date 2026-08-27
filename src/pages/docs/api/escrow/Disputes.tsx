@@ -53,9 +53,9 @@ export default function DisputeArbitration() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="raise-dispute.bash"
-                            code={`curl https://api.pyrnado.com/v1/escrow/contracts/esc_123/dispute \\
+                            code={`curl https://api.zapzive.com/v1/escrow/contracts/esc_123/dispute \\
   -d reason="undelivered_goods" \\
-  -d evidence_url="https://s3.pyrnado/ev_991.zip"`}
+  -d evidence_url="https://s3.zapzive/ev_991.zip"`}
                         />
                     </div>
                 </div>
@@ -86,7 +86,7 @@ export default function DisputeArbitration() {
                     <div className="space-y-4">
                         <CodeWindow
                             title="get-dispute.bash"
-                            code={`curl https://api.pyrnado.com/v1/escrow/disputes/dsp_771`}
+                            code={`curl https://api.zapzive.com/v1/escrow/disputes/dsp_771`}
                         />
                     </div>
                 </div>
@@ -125,3 +125,4 @@ function ResponseCode({ code, desc, color }: { code: string; desc: string; color
         </div>
     );
 }
+

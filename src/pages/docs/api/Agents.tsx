@@ -20,7 +20,7 @@ export default function AgentsAPI() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <DocCallout type="info" title="What is an Agent?">
-                    In the Pyrnado ecosystem, an Agent is a verified physical location authorized to perform last-mile cash disbursements.
+                    In the zapzive ecosystem, an Agent is a verified physical location authorized to perform last-mile cash disbursements.
                 </DocCallout>
                 <DocCallout type="warning" title="Anti-Terrorism Finance">
                     Agents are subject to Enhanced Due Diligence (EDD). Attempting to bypass verification will result in immediate suspension.
@@ -52,7 +52,7 @@ export default function AgentsAPI() {
                         <CodeWindow
                             language="bash"
                             title="cURL"
-                            code={`curl https://api.pyrnado.com/v1/agents \\
+                            code={`curl https://api.zapzive.com/v1/agents \\
   -u sk_test_...: \\
   -d name="Lagos Downtown Branch" \\
   -d location="6.5244, 3.3792"`}
@@ -132,3 +132,4 @@ function WorkflowBox({ title, desc }: { title: string; desc: string }) {
         </div>
     );
 }
+
